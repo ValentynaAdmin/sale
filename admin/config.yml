@@ -1,0 +1,20 @@
+backend:
+  name: github
+  repo: valentynaadmin/sale
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "products"
+    label: "Товары"
+    folder: "products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Название", name: "title", widget: "string" }
+      - { label: "Цена", name: "price", widget: "number" }
+      - { label: "Описание", name: "body", widget: "text" }
+      - { label: "Фото", name: "image", widget: "image" }
+      - { label: "Количество", name: "qty", widget: "number" }
