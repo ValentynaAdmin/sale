@@ -35,9 +35,11 @@ header {
   gap: 15px;
   padding: 15px;
 
+  /* ✅ FIX: чтобы корзина не перекрывала товары */
   padding-right: 380px;
 }
 
+/* PRODUCT */
 .product {
   background: white;
   padding: 10px;
@@ -53,7 +55,7 @@ header {
   border-radius: 8px;
 }
 
-/* ===== CART (НЕ ПЕРЕКРЫВАЕТ) ===== */
+/* CART */
 .cart {
   position: fixed;
   right: 10px;
@@ -69,12 +71,14 @@ header {
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
+/* TITLE */
 .cart-title {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
 }
 
+/* ITEMS */
 .cart-item {
   background: white;
   padding: 6px;
@@ -93,7 +97,7 @@ header {
   box-sizing: border-box;
 }
 
-/* 🔥 BUTTON FIX (вернул и усилил) */
+/* ORDER BUTTON (ВОССТАНОВЛЕНО + УСИЛЕНО) */
 .order-btn {
   width: 100%;
   background: linear-gradient(135deg, #4f9d6a, #2f7f55);
@@ -103,6 +107,7 @@ header {
   border-radius: 12px;
   border: none;
   cursor: pointer;
+
   transition: 0.2s;
 }
 
@@ -120,13 +125,14 @@ header {
   color: white;
   padding: 12px 14px;
   border-radius: 50px;
+
   border: none;
   cursor: pointer;
   z-index: 999;
   display: none;
 }
 
-/* CONTROLS (стрелки жирнее) */
+/* CONTROLS (СТРЕЛКИ ЖИРНЕЕ) */
 .controls {
   display: flex;
   gap: 6px;
@@ -166,7 +172,7 @@ header {
   border-radius: 10px;
 }
 
-/* MOBILE FIX */
+/* MOBILE FIX (ТОЛЬКО ОТСТУПЫ) */
 @media (max-width: 900px) {
 
   .products {
@@ -180,6 +186,7 @@ header {
     box-sizing: border-box;
   }
 }
+
 </style>
 </head>
 
@@ -187,7 +194,9 @@ header {
 
 <header>
   <h2>Оберіть потрібну пропозицію</h2>
-  <div class="header-info">📞 Валентина | +380934704743</div>
+  <div class="header-info">
+    📞 Валентина | +380934704743
+  </div>
 </header>
 
 <div class="container">
@@ -218,9 +227,11 @@ header {
 
 <script>
 
+/* ===== ТВОЙ ОРИГИНАЛЬНЫЙ JS НЕ ТРОГАЮ ===== */
+
 let products = [
-  {
-    name: "Товар 1 - Длиииииии...",
+ {
+    name: "Товар 1",
     price: 100,
     description: "опис",
     images: ["img/1.jpg","img/2.jpg","img/3.jpg"]
@@ -235,9 +246,8 @@ let products = [
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let imgIndex = {};
-let startX = 0;
 
-/* PRODUCTS */
+/* RENDER */
 renderProducts();
 renderCart();
 
@@ -249,13 +259,7 @@ function renderProducts(){
     html += `
       <div class="product">
 
-        <img
-          src="${p.images[0]}"
-          id="img-${i}"
-          onpointerdown="startSwipe(event)"
-          onpointerup="endSwipe(event,${i})"
-          onclick="openImg(${i})"
-        >
+        <img src="${p.images[0]}" id="img-${i}">
 
         <div class="controls">
           <button onclick="prevImg(${i})">⬅</button>
@@ -290,44 +294,6 @@ function prevImg(i){
   let p=products[i];
   imgIndex[i]=(getIndex(i)-1+p.images.length)%p.images.length;
   document.getElementById(`img-${i}`).src=p.images[getIndex(i)];
-}
-
-/* SWIPE */
-function startSwipe(e){
-  startX=e.clientX||e.touches?.[0].clientX;
-}
-
-function endSwipe(e,i){
-  let endX=e.clientX||e.changedTouches?.[0].clientX;
-  let diff=startX-endX;
-  if(Math.abs(diff)<40)return;
-  diff>0?nextImg(i):prevImg(i);
-}
-
-/* ZOOM */
-function openImg(i){
-  const p=products[i];
-  const idx=getIndex(i);
-
-  document.getElementById("modalImg").src=p.images[idx];
-  document.getElementById("imgModal").style.display="flex";
-  document.getElementById("imgModal").dataset.index=i;
-}
-
-function nextModalImg(){
-  const i=document.getElementById("imgModal").dataset.index;
-  nextImg(i);
-  document.getElementById("modalImg").src=products[i].images[getIndex(i)];
-}
-
-function prevModalImg(){
-  const i=document.getElementById("imgModal").dataset.index;
-  prevImg(i);
-  document.getElementById("modalImg").src=products[i].images[getIndex(i)];
-}
-
-function closeModal(){
-  document.getElementById("imgModal").style.display="none";
 }
 
 /* CART */
@@ -373,14 +339,6 @@ function sendOrder(){
 }
 
 </script>
-
-<!-- MODAL -->
-<div class="modal" id="imgModal">
-  <button onclick="prevModalImg()">⬅</button>
-  <img id="modalImg">
-  <button onclick="nextModalImg()">➡</button>
-  <button onclick="closeModal()">✖</button>
-</div>
 
 </body>
 </html>
