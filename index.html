@@ -18,14 +18,6 @@ header {
   color: white;
   padding: 15px;
   text-align: center;
-  font-size: 16px;
-}
-
-/* PHONE (НЕ КНОПКА) */
-.phone {
-  margin-top: 6px;
-  font-size: 14px;
-  opacity: 0.9;
 }
 
 /* LAYOUT */
@@ -50,16 +42,16 @@ header {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* IMAGE (фикс размер, чтобы не прыгало) */
+/* 📸 чуть больше фото */
 .product img {
   width: 100%;
-  height: 180px;
+  height: 210px;
   object-fit: cover;
   border-radius: 8px;
   cursor: zoom-in;
 }
 
-/* arrows */
+/* buttons */
 .controls {
   display: flex;
   gap: 6px;
@@ -75,23 +67,24 @@ header {
   border-radius: 6px;
 }
 
-/* ===== CART FIXED ===== */
+/* 🛒 CART (sticky + fixed feel) */
 .cart {
-  position: fixed;
-  right: 15px;
-  top: 15px;
+  position: sticky;
+  top: 10px;
 
-  width: 320px;
-  max-height: 92vh;
-  overflow-y: auto;
-
+  flex: 1;
   background: #e9f5ea;
+  margin: 15px;
   padding: 15px;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
-/* CART TITLE */
+/* TITLE */
 .cart-title {
   display: flex;
   justify-content: space-between;
@@ -105,10 +98,9 @@ header {
   padding: 6px;
   border-radius: 8px;
   margin-bottom: 6px;
-  font-size: 14px;
 }
 
-/* INPUTS */
+/* INPUTS ORDER */
 .cart input,
 .cart textarea {
   width: 100%;
@@ -117,13 +109,10 @@ header {
   border-radius: 8px;
   border: 1px solid #ccc;
   box-sizing: border-box;
-
   resize: vertical;
-  min-height: 40px;
-  max-height: 120px;
 }
 
-/* ORDER BUTTON (без прыжков) */
+/* 🟢 ORDER BUTTON */
 .order-btn {
   width: 100%;
   background: linear-gradient(135deg, #4f9d6a, #2f7f55);
@@ -135,40 +124,23 @@ header {
   border-radius: 12px;
   border: none;
   cursor: pointer;
-
   transition: 0.2s;
 }
 
 .order-btn:hover {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
-/* MODAL IMAGE */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  justify-content: center;
-  align-items: center;
-}
-
-.modal img {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 10px;
-}
-
-/* MOBILE */
+/* MOBILE FIX (центр + отступы) */
 @media (max-width: 900px) {
-  .cart {
-    position: relative;
-    width: auto;
-    margin: 10px;
-  }
-
   .container {
     flex-direction: column;
+  }
+
+  .cart {
+    position: relative;
+    margin: 10px auto;
+    width: calc(100% - 20px);
   }
 }
 </style>
@@ -177,8 +149,7 @@ header {
 <body>
 
 <header>
-  <div>Оберіть потрібну пропозицію</div>
-  <div class="phone">📞 Валентина | +380934704743</div>
+  <h2>Оберіть потрібну пропозицію</h2>
 </header>
 
 <div class="container">
@@ -194,12 +165,11 @@ header {
 
     <div id="cart"></div>
 
+    <!-- ПОРЯДОК ИСПРАВЛЕН -->
     <input id="name" placeholder="Ім'я">
-
+    <input id="phone" placeholder="Телефон">
     <textarea id="city" placeholder="Адреса"></textarea>
     <textarea id="comment" placeholder="Коментар"></textarea>
-
-    <input id="phone" placeholder="Телефон">
 
     <button class="order-btn" onclick="sendOrder()">
       Оформити замовлення
@@ -209,37 +179,20 @@ header {
 
 </div>
 
-<!-- MODAL -->
-<div class="modal" id="modal" onclick="closeModal()">
-  <img id="modalImg">
-</div>
-
 <script>
 
-/* ===== YOUR PRODUCTS (вставил как есть) ===== */
+/* PRODUCTS */
 let products = [
   {
-    name: "Товар 1 - длинное название товара. длинное название товара",
+    name: "Товар 1 - длинное название товара",
     price: 100,
-    description: "Короткое описание товара описание товара описание товара описание товараописание товара описание товараописание товара описание товара",
+    description: "Описание товара",
     images: ["img/1.jpg", "img/2.jpg", "img/3.jpg"]
   },
   {
     name: "Товар 2",
     price: 150,
-    description: "Короткое описание товара",
-    images: ["img/1-1.jpg", "img/1-2.jpg", "img/1-3.jpg"]
-  },
-  {
-    name: "Товар 3",
-    price: 100,
-    description: "Короткое описание товара",
-    images: ["img/1.jpg", "img/2.jpg"]
-  },
-  {
-    name: "Товар 4",
-    price: 150,
-    description: "Короткое описание товара",
+    description: "Описание товара",
     images: ["img/1-1.jpg", "img/1-2.jpg", "img/1-3.jpg"]
   }
 ];
@@ -247,7 +200,7 @@ let products = [
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let imgIndex = {};
 
-/* ===== RENDER PRODUCTS ===== */
+/* RENDER */
 renderProducts();
 renderCart();
 
@@ -255,12 +208,11 @@ function renderProducts(){
   let html = "";
 
   products.forEach((p, i) => {
+
     html += `
       <div class="product">
 
-        <img src="${p.images[0]}"
-             onclick="openModal('${p.images[0]}')"
-             id="img-${i}">
+        <img src="${p.images[0]}" id="img-${i}">
 
         <div class="controls">
           <button onclick="prevImg(${i})">⬅</button>
@@ -271,7 +223,8 @@ function renderProducts(){
         <p>${p.description}</p>
         <b>${p.price} грн</b>
 
-        <button onclick="add(${i})">Додати</button>
+        <!-- ИЗМЕНЕНО -->
+        <button onclick="add(${i})">Додати в корзину</button>
       </div>
     `;
   });
@@ -279,7 +232,7 @@ function renderProducts(){
   document.getElementById("products").innerHTML = html;
 }
 
-/* ===== SLIDER ===== */
+/* SLIDER */
 function getIndex(i){
   if(imgIndex[i] === undefined) imgIndex[i] = 0;
   return imgIndex[i];
@@ -297,17 +250,7 @@ function prevImg(i){
   document.getElementById(`img-${i}`).src = p.images[getIndex(i)];
 }
 
-/* ===== MODAL ===== */
-function openModal(src){
-  document.getElementById("modal").style.display = "flex";
-  document.getElementById("modalImg").src = src;
-}
-
-function closeModal(){
-  document.getElementById("modal").style.display = "none";
-}
-
-/* ===== CART ===== */
+/* CART */
 function add(i){
   let item = products[i];
   let found = cart.find(x => x.name === item.name);
@@ -325,7 +268,6 @@ function renderCart(){
 
   cart.forEach(c => {
     total += c.price * c.qty;
-
     html += `<div class="cart-item">${c.name} x ${c.qty}</div>`;
   });
 
@@ -339,7 +281,7 @@ function save(){
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-/* ===== ORDER ===== */
+/* ORDER */
 function sendOrder(){
 
   let order = "";
