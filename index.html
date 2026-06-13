@@ -20,6 +20,16 @@ header {
   text-align: center;
 }
 
+.call-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 8px 14px;
+  background: #3f5f4f;
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
 /* LAYOUT */
 .container {
   display: flex;
@@ -45,6 +55,7 @@ header {
 .product img {
   width: 100%;
   border-radius: 8px;
+  user-select: none;
 }
 
 /* arrows */
@@ -61,10 +72,9 @@ header {
   border: none;
   padding: 6px;
   border-radius: 6px;
-  cursor: pointer;
 }
 
-/* ===== CART (FIXED + STICKY) ===== */
+/* ===== CART ===== */
 .cart {
   flex: 1;
   background: #e9f5ea;
@@ -72,48 +82,31 @@ header {
   padding: 15px;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-
-  position: sticky;
-  top: 15px;
-
-  max-height: 90vh;
-  overflow-y: auto;
-
-  display: flex;
-  flex-direction: column;
+  border: 1px solid #cfe6d6;
 }
 
-/* HEADER CART */
 .cart-title {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   font-size: 18px;
   margin-bottom: 10px;
 }
 
-.cart-title span {
-  font-size: 22px;
-}
-
-/* CART ITEMS (FIX OVERFLOW) */
-#cart {
+.cart-items {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  overflow-wrap: break-word;
-  word-break: break-word;
 }
 
-/* ITEM */
 .cart-item {
-  background: #ffffff;
+  background: white;
   padding: 6px;
   border-radius: 8px;
   font-size: 14px;
 }
 
-/* INPUTS FIX */
+/* inputs FIX */
 .cart input {
   width: 100%;
   padding: 9px;
@@ -123,12 +116,12 @@ header {
   box-sizing: border-box;
 }
 
-/* BUTTON ORDER (приятный + заметный) */
+/* ORDER BUTTON (ЯРЧЕ, НО ПРИЯТНО) */
 .order-btn {
-  background: linear-gradient(135deg, #5fa77a, #3f7f5f);
+  background: linear-gradient(135deg, #4f9d6a, #2f7f55);
   color: white;
   font-weight: 600;
-  padding: 12px;
+  padding: 13px;
   font-size: 15px;
   margin-top: 10px;
   border-radius: 12px;
@@ -139,30 +132,23 @@ header {
 
 .order-btn:hover {
   transform: scale(1.02);
-  opacity: 0.95;
 }
 
-/* PHONE BUTTON */
+/* PHONE BUTTON (ТОЛЬКО СВЕРХУ) */
 .phone-btn {
-  display: block;
-  text-align: center;
-  background: #2f4f3f;
+  display: inline-block;
+  margin-top: 8px;
+  padding: 8px 14px;
+  background: #3f5f4f;
   color: white;
-  padding: 10px;
   border-radius: 10px;
   text-decoration: none;
-  margin-top: 8px;
 }
 
 /* MOBILE */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
-  }
-
-  .cart {
-    position: relative;
-    max-height: none;
   }
 }
 </style>
@@ -172,22 +158,24 @@ header {
 
 <header>
   <h2>Оберіть потрібну пропозицію</h2>
-  <p>📞 Валентина | +380934704743</p>
+
+  <a class="phone-btn" href="tel:+380934704743">
+    📞 Валентина — подзвонити
+  </a>
 </header>
 
 <div class="container">
 
   <div class="products" id="products"></div>
 
-  <!-- CART -->
   <div class="cart">
 
     <div class="cart-title">
-      <span>🛍 Кошик</span>
-      <small id="total">0 грн</small>
+      <span>🛒 Корзина</span>
+      <span id="total">0 грн</span>
     </div>
 
-    <div id="cart"></div>
+    <div id="cart" class="cart-items"></div>
 
     <input id="name" placeholder="Ім'я">
     <input id="phone" placeholder="Телефон">
@@ -197,10 +185,6 @@ header {
     <button class="order-btn" onclick="sendOrder()">
       Оформити замовлення
     </button>
-
-    <a class="phone-btn" href="tel:+380934704743">
-      📞 Подзвонити Валентині
-    </a>
 
   </div>
 
@@ -258,7 +242,7 @@ function renderProducts(){
   document.getElementById("products").innerHTML = html;
 }
 
-/* SLIDER */
+/* FIX SLIDER (СТАБИЛЬНО) */
 function getIndex(i){
   if(imgIndex[i] === undefined) imgIndex[i] = 0;
   return imgIndex[i];
