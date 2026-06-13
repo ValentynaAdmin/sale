@@ -364,13 +364,37 @@ function add(i){
   renderCart();
 }
 
+function changeQty(i, delta){
+  cart[i].qty += delta;
+
+  if(cart[i].qty <= 0){
+    cart.splice(i, 1);
+  }
+
+  save();
+  renderCart();
+}
+
 function renderCart(){
   let html = "";
   let total = 0;
 
-  cart.forEach(c => {
+  cart.forEach((c, i) => {
     total += c.price * c.qty;
-    html += `<div class="cart-item">${c.name} x ${c.qty}</div>`;
+
+    html += `
+      <div class="cart-item">
+        <div style="margin-bottom:5px;">
+          ${c.name}
+        </div>
+
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button onclick="changeQty(${i}, -1)">-</button>
+          <b>${c.qty}</b>
+          <button onclick="changeQty(${i}, 1)">+</button>
+        </div>
+      </div>
+    `;
   });
 
   document.getElementById("cart").innerHTML = html;
