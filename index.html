@@ -26,15 +26,16 @@ header {
   align-items: flex-start;
 }
 
-/* PRODUCTS */
+/* PRODUCTS GRID (минимум 2 карточки на ПК) */
 .products {
   flex: 3;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 15px;
   padding: 15px;
 }
 
+/* PRODUCT */
 .product {
   background: white;
   padding: 10px;
@@ -42,7 +43,7 @@ header {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* 📸 чуть больше фото */
+/* IMAGE (фикс размер + кликабельно) */
 .product img {
   width: 100%;
   height: 210px;
@@ -51,7 +52,13 @@ header {
   cursor: zoom-in;
 }
 
-/* buttons */
+/* TEXT FIX (длинные названия не ломают блок) */
+.product h4,
+.product p {
+  word-break: break-word;
+}
+
+/* controls */
 .controls {
   display: flex;
   gap: 6px;
@@ -67,24 +74,24 @@ header {
   border-radius: 6px;
 }
 
-/* 🛒 CART (sticky + fixed feel) */
+/* ===== CART FIXED ALWAYS VISIBLE ===== */
 .cart {
-  position: sticky;
+  position: fixed;
   top: 10px;
+  right: 10px;
 
-  flex: 1;
+  width: 340px;
+  max-height: 92vh;
+  overflow-y: auto;
+
   background: #e9f5ea;
-  margin: 15px;
   padding: 15px;
   border-radius: 16px;
 
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-
-  max-height: 90vh;
-  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
-/* TITLE */
+/* CART TITLE */
 .cart-title {
   display: flex;
   justify-content: space-between;
@@ -98,9 +105,11 @@ header {
   padding: 6px;
   border-radius: 8px;
   margin-bottom: 6px;
+
+  word-break: break-word;
 }
 
-/* INPUTS ORDER */
+/* INPUTS */
 .cart input,
 .cart textarea {
   width: 100%;
@@ -112,7 +121,7 @@ header {
   resize: vertical;
 }
 
-/* 🟢 ORDER BUTTON */
+/* ORDER BUTTON (ярче и стабильный текст) */
 .order-btn {
   width: 100%;
   background: linear-gradient(135deg, #4f9d6a, #2f7f55);
@@ -128,10 +137,26 @@ header {
 }
 
 .order-btn:hover {
-  transform: scale(1.02);
+  transform: scale(1.03);
 }
 
-/* MOBILE FIX (центр + отступы) */
+/* MODAL IMAGE */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+}
+
+/* MOBILE */
 @media (max-width: 900px) {
   .container {
     flex-direction: column;
@@ -139,8 +164,8 @@ header {
 
   .cart {
     position: relative;
-    margin: 10px auto;
-    width: calc(100% - 20px);
+    width: auto;
+    margin: 10px;
   }
 }
 </style>
@@ -159,13 +184,12 @@ header {
   <div class="cart">
 
     <div class="cart-title">
-      <span>🛒 Корзина</span>
+      <span>🛒 Кошик</span>
       <span id="total">0 грн</span>
     </div>
 
     <div id="cart"></div>
 
-    <!-- ПОРЯДОК ИСПРАВЛЕН -->
     <input id="name" placeholder="Ім'я">
     <input id="phone" placeholder="Телефон">
     <textarea id="city" placeholder="Адреса"></textarea>
@@ -179,18 +203,41 @@ header {
 
 </div>
 
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModal()">
+  <img id="modalImg">
+</div>
+
 <script>
 
-/* PRODUCTS */
+/* ===== YOUR PRODUCTS (вставлено как ты дала) ===== */
 let products = [
   {
-    name: "Товар 1 - длинное название товара",
+    name: "Товар 1 - Длиииииииииииииииииииииии ииииииииииииииииииииииииииииииииии иииииииииииииинное название товара",
     price: 100,
-    description: "Описание товара",
+    description: "Длиииииииииииииииииииииии ииииииииииииииииииииииииииииииииии иииииииииииииинное описание товара",
     images: ["img/1.jpg", "img/2.jpg", "img/3.jpg"]
   },
   {
     name: "Товар 2",
+    price: 150,
+    description: "Описание товара",
+    images: ["img/1-1.jpg", "img/1-2.jpg", "img/1-3.jpg"]
+  },
+  {
+    name: "Товар 3 - Длиииииииииииииииииииииии ...",
+    price: 100,
+    description: "Длиииииииииииииииииииииии ...",
+    images: ["img/1.jpg", "img/2.jpg", "img/3.jpg"]
+  },
+  {
+    name: "Товар 4",
+    price: 150,
+    description: "Описание товара",
+    images: ["img/1-1.jpg", "img/1-2.jpg", "img/1-3.jpg"]
+  },
+  {
+    name: "Товар 5",
     price: 150,
     description: "Описание товара",
     images: ["img/1-1.jpg", "img/1-2.jpg", "img/1-3.jpg"]
@@ -212,7 +259,9 @@ function renderProducts(){
     html += `
       <div class="product">
 
-        <img src="${p.images[0]}" id="img-${i}">
+        <img src="${p.images[0]}"
+             id="img-${i}"
+             onclick="openModal('${p.images[0]}')">
 
         <div class="controls">
           <button onclick="prevImg(${i})">⬅</button>
@@ -223,8 +272,7 @@ function renderProducts(){
         <p>${p.description}</p>
         <b>${p.price} грн</b>
 
-        <!-- ИЗМЕНЕНО -->
-        <button onclick="add(${i})">Додати в корзину</button>
+        <button onclick="add(${i})">Додати до кошика</button>
       </div>
     `;
   });
@@ -232,7 +280,7 @@ function renderProducts(){
   document.getElementById("products").innerHTML = html;
 }
 
-/* SLIDER */
+/* SLIDER FIX */
 function getIndex(i){
   if(imgIndex[i] === undefined) imgIndex[i] = 0;
   return imgIndex[i];
@@ -248,6 +296,16 @@ function prevImg(i){
   let p = products[i];
   imgIndex[i] = (getIndex(i) - 1 + p.images.length) % p.images.length;
   document.getElementById(`img-${i}`).src = p.images[getIndex(i)];
+}
+
+/* MODAL */
+function openModal(src){
+  document.getElementById("modal").style.display = "flex";
+  document.getElementById("modalImg").src = src;
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
 }
 
 /* CART */
