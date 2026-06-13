@@ -36,7 +36,23 @@ header {
   gap: 15px;
   padding: 15px 380px 15px 15px;
   align-content: start;
-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1450px) {
+
+  .products {
+    padding: 15px;
+  }
+
+  .cart {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: calc(100% - 24px);
+    margin: 10px 12px 24px 12px;
+    max-height: none;
+  }
 }
 
 /* 📦 FIX ВЕРСТКИ ТОВАРОВ */
