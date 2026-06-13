@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Магазин</title>
+<title>Розпродаж</title>
 
 <style>
 body {
@@ -181,6 +181,32 @@ header {
 
 .order-btn:hover {
   transform: scale(1.03);
+}
+
+/* ===== FIX DESKTOP CART POSITION ===== */
+@media (min-width: 901px) {
+  .cart {
+    position: fixed;
+    top: calc(90px + 10px); /* хедер + отступ */
+    right: 10px;
+  }
+
+  /* чтобы не перекрывала товары */
+  .products {
+    padding-right: 380px;
+  }
+}
+
+/* ===== FIX MOBILE SIDE + BOTTOM PADDING ===== */
+@media (max-width: 900px) {
+  .cart {
+    position: relative;
+    width: calc(100% - 24px);
+
+    /* равные отступы со всех сторон */
+    margin: 10px 12px 20px 12px; /* ⬅ добавлен нижний отступ */
+    box-sizing: border-box;
+  }
 }
 </style>
 </head>
