@@ -151,11 +151,23 @@ function renderProducts(){
   let html = "";
 
   products.forEach((p, i) => {
+
     html += `
       <div class="product">
-        <img src="${p.img}">
+        
+        <div class="gallery" id="gal-${i}">
+          <img src="${p.images[0]}" id="img-${i}">
+          
+          <div style="display:flex; gap:5px; margin-top:5px;">
+            <button onclick="prevImg(${i})">⬅</button>
+            <button onclick="nextImg(${i})">➡</button>
+          </div>
+        </div>
+
         <h4>${p.name}</h4>
+        <p>${p.description || ""}</p>
         <p>${p.price} грн</p>
+
         <button onclick="add(${i})">Додати в кошик</button>
       </div>
     `;
