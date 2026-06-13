@@ -23,6 +23,7 @@ header {
 /* LAYOUT */
 .container {
   display: flex;
+  align-items: flex-start;
 }
 
 /* PRODUCTS */
@@ -41,12 +42,9 @@ header {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* IMAGE */
 .product img {
   width: 100%;
   border-radius: 8px;
-  user-select: none;
-  -webkit-user-drag: none;
 }
 
 /* arrows */
@@ -58,7 +56,7 @@ header {
 
 .controls button {
   flex: 1;
-  background: #3f5f4f;
+  background: #2f4f3f;
   color: white;
   border: none;
   padding: 6px;
@@ -66,45 +64,94 @@ header {
   cursor: pointer;
 }
 
-/* ===== CART (ПОЛНОСТЬЮ ПЕРЕДЕЛАНА) ===== */
+/* ===== CART (FIXED + STICKY) ===== */
 .cart {
   flex: 1;
-  background: #e7f3ea;
-  padding: 15px;
+  background: #e9f5ea;
   margin: 15px;
+  padding: 15px;
   border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  border: 1px solid #cfe6d6;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+
+  position: sticky;
+  top: 15px;
+
+  max-height: 90vh;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
 }
 
-.cart h3 {
-  color: #2f4f3f;
+/* HEADER CART */
+.cart-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
-/* inputs */
-input {
+.cart-title span {
+  font-size: 22px;
+}
+
+/* CART ITEMS (FIX OVERFLOW) */
+#cart {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ITEM */
+.cart-item {
+  background: #ffffff;
+  padding: 6px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* INPUTS FIX */
+.cart input {
   width: 100%;
   padding: 9px;
-  margin: 6px 0;
+  margin: 5px 0;
   border-radius: 8px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
-/* BUTTON (мягче) */
+/* BUTTON ORDER (приятный + заметный) */
 .order-btn {
-  background: #6f8f7f;
+  background: linear-gradient(135deg, #5fa77a, #3f7f5f);
   color: white;
   font-weight: 600;
-  padding: 11px;
+  padding: 12px;
   font-size: 15px;
   margin-top: 10px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: none;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .order-btn:hover {
-  background: #5f7f6f;
+  transform: scale(1.02);
+  opacity: 0.95;
+}
+
+/* PHONE BUTTON */
+.phone-btn {
+  display: block;
+  text-align: center;
+  background: #2f4f3f;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  margin-top: 8px;
 }
 
 /* MOBILE */
@@ -114,7 +161,8 @@ input {
   }
 
   .cart {
-    margin: 10px;
+    position: relative;
+    max-height: none;
   }
 }
 </style>
@@ -131,11 +179,15 @@ input {
 
   <div class="products" id="products"></div>
 
+  <!-- CART -->
   <div class="cart">
-    <h3>🛒 Кошик</h3>
-    <div id="cart"></div>
 
-    <p><b>Сума: <span id="total">0</span> грн</b></p>
+    <div class="cart-title">
+      <span>🛍 Кошик</span>
+      <small id="total">0 грн</small>
+    </div>
+
+    <div id="cart"></div>
 
     <input id="name" placeholder="Ім'я">
     <input id="phone" placeholder="Телефон">
@@ -145,6 +197,11 @@ input {
     <button class="order-btn" onclick="sendOrder()">
       Оформити замовлення
     </button>
+
+    <a class="phone-btn" href="tel:+380934704743">
+      📞 Подзвонити Валентині
+    </a>
+
   </div>
 
 </div>
@@ -169,9 +226,8 @@ let products = [
 ];
 
 let imgIndex = {};
-let startX = 0;
 
-/* ===== PRODUCTS ===== */
+/* PRODUCTS */
 renderProducts();
 renderCart();
 
@@ -183,12 +239,7 @@ function renderProducts(){
     html += `
       <div class="product">
 
-        <img 
-          src="${p.images[0]}" 
-          id="img-${i}"
-          onpointerdown="startSwipe(event, ${i})"
-          onpointerup="endSwipe(event, ${i})"
-        >
+        <img src="${p.images[0]}" id="img-${i}">
 
         <div class="controls">
           <button onclick="prevImg(${i})">⬅</button>
@@ -199,7 +250,7 @@ function renderProducts(){
         <p>${p.description}</p>
         <p><b>${p.price} грн</b></p>
 
-        <button onclick="add(${i})">Додати в кошик</button>
+        <button onclick="add(${i})">Додати</button>
       </div>
     `;
   });
@@ -207,7 +258,7 @@ function renderProducts(){
   document.getElementById("products").innerHTML = html;
 }
 
-/* ===== SLIDER (СТАБИЛЬНЫЙ) ===== */
+/* SLIDER */
 function getIndex(i){
   if(imgIndex[i] === undefined) imgIndex[i] = 0;
   return imgIndex[i];
@@ -225,36 +276,13 @@ function prevImg(i){
   document.getElementById(`img-${i}`).src = p.images[getIndex(i)];
 }
 
-/* ===== SWIPE FIX (без конфликтов) ===== */
-function startSwipe(e, i){
-  startX = e.clientX || e.touches?.[0].clientX;
-}
-
-function endSwipe(e, i){
-  let endX = e.clientX || e.changedTouches?.[0].clientX;
-  if(!startX || !endX) return;
-
-  let diff = startX - endX;
-
-  if(Math.abs(diff) < 40) return;
-
-  if(diff > 0){
-    nextImg(i);
-  } else {
-    prevImg(i);
-  }
-}
-
-/* ===== CART ===== */
+/* CART */
 function add(i){
   let item = products[i];
   let found = cart.find(x => x.name === item.name);
 
-  if(found){
-    found.qty++;
-  } else {
-    cart.push({...item, qty:1});
-  }
+  if(found) found.qty++;
+  else cart.push({...item, qty:1});
 
   save();
   renderCart();
@@ -264,35 +292,27 @@ function renderCart(){
   let html = "";
   let total = 0;
 
-  cart.forEach((c, i) => {
+  cart.forEach(c => {
     total += c.price * c.qty;
 
     html += `
-      <div>
+      <div class="cart-item">
         ${c.name} x ${c.qty}
-        <button onclick="change(${i},1)">+</button>
-        <button onclick="change(${i},-1)">-</button>
       </div>
     `;
   });
 
   document.getElementById("cart").innerHTML = html;
-  document.getElementById("total").innerText = total;
+  document.getElementById("total").innerText = total + " грн";
 
   save();
-}
-
-function change(i, d){
-  cart[i].qty += d;
-  if(cart[i].qty <= 0) cart.splice(i,1);
-  renderCart();
 }
 
 function save(){
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-/* ===== ORDER ===== */
+/* ORDER */
 function sendOrder(){
 
   let order = "";
@@ -315,7 +335,7 @@ ${order}
 Адреса: ${document.getElementById("city").value}
 Коментар: ${document.getElementById("comment").value}
 
-Сума: ${document.getElementById("total").innerText} грн
+Сума: ${document.getElementById("total").innerText}
 `
     })
   });
