@@ -139,6 +139,26 @@ header {
   box-sizing: border-box;
 }
 }
+
+/* ===== MODAL ZOOM ===== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+}
 </style>
 </head>
 
@@ -232,7 +252,13 @@ function renderProducts(){
       <div class="product">
 
         <!-- 📸 ВЕРНУЛ ПЕРЕКЛЮЧЕНИЕ -->
-        <img src="${p.images[0]}" id="img-${i}">
+        <img 
+  src="${p.images[0]}" 
+  id="img-${i}"
+  onpointerdown="startSwipe(event)"
+  onpointerup="endSwipe(event, ${i})"
+  onclick="openImg(${i})"
+>
 
         <div>
           <button onclick="prevImg(${i})">⬅</button>
@@ -350,7 +376,49 @@ window.addEventListener("load", () => {
   document.getElementById("cartBox").style.top = (h + 10) + "px";
 });
 
+let startX = 0;
+
+/* SWIPE START */
+function startSwipe(e){
+  startX = e.clientX || e.touches?.[0].clientX;
+}
+
+/* SWIPE END */
+function endSwipe(e, i){
+  let endX = e.clientX || e.changedTouches?.[0].clientX;
+  if(!startX || !endX) return;
+
+  let diff = startX - endX;
+
+  if(Math.abs(diff) < 40) return;
+
+  if(diff > 0){
+    nextImg(i);
+  } else {
+    prevImg(i);
+  }
+}
+
+/* OPEN IMAGE */
+function openImg(i){
+  const p = products[i];
+  const idx = getIndex(i);
+
+  document.getElementById("modalImg").src = p.images[idx];
+  document.getElementById("imgModal").style.display = "flex";
+}
+
+/* CLOSE */
+function closeModal(){
+  document.getElementById("imgModal").style.display = "none";
+}
+
 </script>
+
+<!-- MODAL ZOOM -->
+<div class="modal" id="imgModal" onclick="closeModal()">
+  <img id="modalImg">
+</div>
 
 </body>
 </html>
