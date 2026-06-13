@@ -262,6 +262,31 @@ ${order}
   renderCart();
 }
 
+  let imgIndex = {};
+
+// следим за текущим фото каждого товара
+function getIndex(i){
+  if(imgIndex[i] === undefined) imgIndex[i] = 0;
+  return imgIndex[i];
+}
+
+function renderImg(i){
+  const p = products[i];
+  document.getElementById(`img-${i}`).src = p.images[getIndex(i)];
+}
+
+function nextImg(i){
+  const p = products[i];
+  imgIndex[i] = (getIndex(i) + 1) % p.images.length;
+  renderImg(i);
+}
+
+function prevImg(i){
+  const p = products[i];
+  imgIndex[i] = (getIndex(i) - 1 + p.images.length) % p.images.length;
+  renderImg(i);
+}
+
 </script>
 
 </body>
