@@ -10,6 +10,8 @@ body {
   font-family: Arial;
   background: #f6f3ee;
   margin: 0;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 /* HEADER */
@@ -32,10 +34,10 @@ header {
 /* PRODUCTS */
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 15px;
-  padding: 15px 360px 15px 15px;
-  align-content: start;
+
+  padding: 15px 340px 15px 15px;
   box-sizing: border-box;
 }
 
@@ -181,30 +183,41 @@ header {
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 9999;
-
   background: rgba(0,0,0,0.85);
 
-  display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
 
-  gap: 10px;
-  padding: 15px;
+  gap: 12px;
+  padding: 10px;
   box-sizing: border-box;
 }
 
 .modal img {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 85%;
+  max-height: 85%;
   border-radius: 10px;
+}
+
+.modal button {
+  min-width: 44px;
+  min-height: 44px;
+
+  background: rgba(255,255,255,0.15);
+  color: white;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 20px;
+  font-weight: 900;
 }
 
 .controls {
   display: flex;
   gap: 6px;
-  margin-top: 5px;
+  margin-top: 6px;
+  height: 44px;
 }
 
 .controls button {
@@ -260,9 +273,15 @@ header {
 .modal button {
   min-width: 44px;
   min-height: 44px;
+
+  background: rgba(255,255,255,0.15);
+  color: white;
+
+  border: none;
+  border-radius: 10px;
+
   font-size: 20px;
   font-weight: 900;
-  z-index: 10;
 }
 
 .container {
