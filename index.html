@@ -152,12 +152,27 @@ header {
 @media (max-width: 900px) {
   .cart {
     position: relative;
-    width: calc(100% - 24px);
+    width: calc(100% - 20px);
+    margin: 10px auto;
+    max-height: none;
+  }
 
-    /* равные отступы + ОБЯЗАТЕЛЬНЫЙ низ */
-    margin: 10px 12px 24px 12px;
+  .products {
+    padding: 10px;
+  }
 
-    box-sizing: border-box;
+  .container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal {
+    padding: 5px;
+  }
+
+  .modal img {
+    max-width: 95%;
+    max-height: 80vh;
   }
 }
 
@@ -215,6 +230,38 @@ header {
   .products {
     padding-right: 380px;
   }
+}
+
+.controls button {
+  min-width: 42px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.modal {
+  flex-direction: row;
+  gap: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.modal button {
+  flex: 0 0 auto;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.container {
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.products {
+  padding-bottom: 10px;
 }
 
 </style>
