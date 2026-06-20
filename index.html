@@ -34,7 +34,7 @@ header {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 15px;
-  padding: 15px 380px 15px 15px;
+  padding: 15px 360px 15px 15px;
   align-content: start;
   box-sizing: border-box;
 }
@@ -153,12 +153,12 @@ header {
   .cart {
     position: relative;
     width: calc(100% - 20px);
-    margin: 10px auto;
+    margin: 10px auto 10px auto; /* одинаково сверху/снизу */
     max-height: none;
   }
 
   .products {
-    padding: 10px;
+    padding-bottom: 10px;
   }
 
   .container {
@@ -232,13 +232,23 @@ header {
   }
 }
 
+@media (min-width: 901px) {
+  .products {
+    max-width: calc(100% - 360px);
+  }
+}
+
 .controls button {
-  min-width: 42px;
-  min-height: 36px;
+  min-width: 44px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+
+  font-size: 20px;
+  font-weight: 900;
+
+  padding: 0;
   line-height: 1;
 }
 
@@ -253,6 +263,8 @@ header {
   flex: 0 0 auto;
   min-width: 44px;
   min-height: 44px;
+  font-size: 18px;
+  font-weight: 900;
 }
 
 .container {
@@ -262,6 +274,10 @@ header {
 
 .products {
   padding-bottom: 10px;
+}
+
+.product {
+  overflow: hidden;
 }
 
 </style>
