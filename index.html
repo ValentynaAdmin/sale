@@ -12,52 +12,31 @@ body {
   margin: 0;
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 header {
   background: #2f4f3f;
   color: white;
   padding: 15px;
   text-align: center;
-  position: relative;
-  z-index: 10;
 }
 
-.header-info {
-  font-size: 14px;
-  margin-top: 6px;
-  opacity: 0.9;
+/* ===== LAYOUT WRAPPER ===== */
+.container {
+  display: block;
 }
 
-/* PRODUCTS */
+/* ===== PRODUCTS GRID ===== */
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 15px;
-  padding: 15px 360px 15px 15px;
+
+  padding: 15px;
+  padding-right: 380px; /* место под корзину */
   box-sizing: border-box;
 }
 
-/* DESKTOP FIX */
-@media (min-width: 901px) {
-  .products {
-    padding-right: 360px;
-  }
-}
-
-/* MOBILE */
-@media (max-width: 900px) {
-  .products {
-    padding: 10px;
-  }
-
-  .cart {
-    position: relative;
-    width: calc(100% - 20px);
-    margin: 10px auto 20px auto;
-  }
-}
-
-/* PRODUCT CARD */
+/* ===== PRODUCT CARD ===== */
 .product {
   background: white;
   padding: 10px;
@@ -66,15 +45,16 @@ header {
   overflow: hidden;
 }
 
-/* IMAGE */
+/* IMAGE LOCK (ВАЖНО ДЛЯ МОБИЛКИ) */
 .product img {
   width: 100%;
   height: 210px;
   object-fit: cover;
   border-radius: 8px;
+  display: block;
 }
 
-/* CONTROLS (СТРЕЛКИ) */
+/* ===== ARROWS ===== */
 .controls {
   display: flex;
   gap: 6px;
@@ -82,30 +62,39 @@ header {
 }
 
 .controls button {
-  flex: 1;
-  min-width: 44px;
-  min-height: 44px;
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 900;
+
   border: none;
   background: #3f5f4f;
   color: white;
   border-radius: 6px;
 }
 
-/* CART */
+/* ===== CART (DESKTOP FIXED) ===== */
 .cart {
-  position: sticky;
+  position: fixed;
   top: 100px;
+  right: 10px;
+
   width: 340px;
   max-height: calc(100vh - 120px);
   overflow-y: auto;
+
   background: #e9f5ea;
   padding: 15px;
   border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
-/* CART ITEMS */
+/* ITEMS */
 .cart-item {
   background: white;
   padding: 6px;
@@ -121,9 +110,10 @@ header {
   margin: 6px 0;
   border-radius: 8px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
-/* BUTTON */
+/* ORDER BUTTON */
 .order-btn {
   width: 100%;
   background: #4f9d6a;
@@ -133,12 +123,13 @@ header {
   border: none;
 }
 
-/* MODAL FIX */
+/* ===== MODAL (STABLE OVERLAY) ===== */
 .modal {
   display: none;
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.85);
+
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -157,24 +148,48 @@ header {
 
 /* MODAL BUTTONS */
 .modal button {
-  min-width: 44px;
-  min-height: 44px;
+  width: 44px;
+  height: 44px;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 900;
   border: none;
   border-radius: 6px;
 }
 
+/* CLOSE BUTTON FIX */
 .modal-close {
   position: absolute;
   top: 15px;
   right: 15px;
+
   width: 44px;
   height: 44px;
-  background: white;
   border-radius: 50%;
+  background: white;
   border: none;
-  z-index: 10000;
+}
+
+/* ===== MOBILE STABLE LAYOUT ===== */
+@media (max-width: 900px) {
+
+  .products {
+    padding: 10px;
+  }
+
+  .cart {
+    position: relative;
+    top: auto;
+    right: auto;
+
+    width: calc(100% - 20px);
+    margin: 10px auto 20px auto;
+    max-height: none;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
 }
 </style>
 </head>
@@ -183,25 +198,23 @@ header {
 
 <header>
   <h2>Оберіть потрібну пропозицію</h2>
-  <div class="header-info">📞 Валентина | +380934704743</div>
 </header>
 
-<div class="products" id="products"></div>
+<div class="container">
 
-<div class="cart" id="cartBox">
-  <h3>🛒 Кошик</h3>
-  <div id="cart"></div>
+  <div class="products" id="products"></div>
 
-  <input id="name" placeholder="Ім'я">
-  <input id="phone" placeholder="Телефон">
-  <textarea id="city" placeholder="Адреса"></textarea>
-  <textarea id="comment" placeholder="Коментар"></textarea>
+  <div class="cart" id="cartBox">
+    <div id="cart"></div>
 
-  <button class="order-btn" onclick="sendOrder()">Оформити замовлення</button>
+    <input id="name" placeholder="Ім'я">
+    <input id="phone" placeholder="Телефон">
+    <textarea id="city" placeholder="Адреса"></textarea>
+    <textarea id="comment" placeholder="Коментар"></textarea>
 
-  <p class="small">
-    Безкоштовна доставка можлива за домовленістю та залежить від суми замовлення і адреси доставки.
-  </p>
+    <button class="order-btn" onclick="sendOrder()">Оформити замовлення</button>
+  </div>
+
 </div>
 
 <!-- MODAL -->
@@ -229,7 +242,7 @@ let imgIndex = {};
 renderProducts();
 renderCart();
 
-/* PRODUCTS */
+/* GRID */
 function renderProducts(){
   let html = "";
 
@@ -271,29 +284,6 @@ function prevImg(i){
   document.getElementById(`img-${i}`).src = products[i].images[getIndex(i)];
 }
 
-/* MODAL */
-function openImg(i){
-  document.getElementById("imgModal").classList.add("active");
-  document.getElementById("modalImg").src = products[i].images[getIndex(i)];
-  document.getElementById("imgModal").dataset.index = i;
-}
-
-function closeModal(){
-  document.getElementById("imgModal").classList.remove("active");
-}
-
-function nextModalImg(){
-  const i = document.getElementById("imgModal").dataset.index;
-  nextImg(i);
-  document.getElementById("modalImg").src = products[i].images[getIndex(i)];
-}
-
-function prevModalImg(){
-  const i = document.getElementById("imgModal").dataset.index;
-  prevImg(i);
-  document.getElementById("modalImg").src = products[i].images[getIndex(i)];
-}
-
 /* CART */
 function add(i){
   let f = cart.find(x=>x.name===products[i].name);
@@ -315,17 +305,31 @@ function save(){
   localStorage.setItem("cart",JSON.stringify(cart));
 }
 
+/* MODAL */
+function openImg(i){
+  document.getElementById("imgModal").classList.add("active");
+  document.getElementById("modalImg").src = products[i].images[getIndex(i)];
+  document.getElementById("imgModal").dataset.index = i;
+}
+
+function closeModal(){
+  document.getElementById("imgModal").classList.remove("active");
+}
+
+function nextModalImg(){
+  const i=document.getElementById("imgModal").dataset.index;
+  nextImg(i);
+  document.getElementById("modalImg").src=products[i].images[getIndex(i)];
+}
+
+function prevModalImg(){
+  const i=document.getElementById("imgModal").dataset.index;
+  prevImg(i);
+  document.getElementById("modalImg").src=products[i].images[getIndex(i)];
+}
+
 /* ORDER */
 function sendOrder(){
-  let order="";
-  cart.forEach(c=>order+=`${c.name} x ${c.qty}\n`);
-
-  fetch("https://formspree.io/f/xrevoywb",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({message:order})
-  });
-
   alert("Замовлення відправлено!");
   cart=[];
   save();
