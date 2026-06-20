@@ -34,27 +34,39 @@ header {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 15px;
   padding: 15px 360px 15px 15px;
-  align-content: start;
   box-sizing: border-box;
 }
 
-/* FIX MOBILE GRID SPACE */
+/* DESKTOP FIX */
+@media (min-width: 901px) {
+  .products {
+    padding-right: 360px;
+  }
+}
+
+/* MOBILE */
 @media (max-width: 900px) {
   .products {
     padding: 10px;
   }
+
+  .cart {
+    position: relative;
+    width: calc(100% - 20px);
+    margin: 10px auto 20px auto;
+  }
 }
 
-/* PRODUCT */
+/* PRODUCT CARD */
 .product {
   background: white;
   padding: 10px;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  box-sizing: border-box;
   overflow: hidden;
 }
 
+/* IMAGE */
 .product img {
   width: 100%;
   height: 210px;
@@ -62,74 +74,43 @@ header {
   border-radius: 8px;
 }
 
-/* CONTROLS */
+/* CONTROLS (СТРЕЛКИ) */
 .controls {
   display: flex;
   gap: 6px;
-  margin-top: 5px;
+  margin-top: 6px;
 }
 
 .controls button {
-  width: 44px;
-  height: 38px;
-
+  flex: 1;
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 18px;
+  font-weight: 700;
+  border: none;
   background: #3f5f4f;
   color: white;
-
-  border: none;
-  border-radius: 8px;
-
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 18px;
-  font-weight: 900;
+  border-radius: 6px;
 }
 
 /* CART */
 .cart {
   position: sticky;
-  top: 90px;
-
+  top: 100px;
   width: 340px;
-  max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 120px);
   overflow-y: auto;
-
   background: #e9f5ea;
   padding: 15px;
   border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-@media (min-width: 901px) {
-  .cart {
-    position: fixed;
-    top: 100px;
-    right: 10px;
-  }
-
-  .products {
-    padding-right: 380px;
-  }
-}
-
-@media (max-width: 900px) {
-  .cart {
-    position: relative;
-    width: calc(100% - 20px);
-    margin: 10px auto;
-  }
 }
 
 /* CART ITEMS */
 .cart-item {
   background: white;
   padding: 6px;
-  border-radius: 8px;
   margin-bottom: 6px;
+  border-radius: 8px;
 }
 
 /* INPUTS */
@@ -140,56 +121,28 @@ header {
   margin: 6px 0;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-family: Arial;
 }
 
 /* BUTTON */
 .order-btn {
   width: 100%;
-  background: linear-gradient(135deg, #4f9d6a, #2f7f55);
+  background: #4f9d6a;
   color: white;
-  font-weight: 600;
   padding: 13px;
   border-radius: 12px;
   border: none;
-  transition: 0.2s;
 }
 
-.order-btn:hover {
-  transform: scale(1.03);
-}
-
-/* FLOAT BUTTON */
-.open-cart-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-
-  background: #2f4f3f;
-  color: white;
-  padding: 12px 14px;
-  border-radius: 50px;
-
-  border: none;
-  cursor: pointer;
-  z-index: 999;
-  display: none;
-}
-
-/* MODAL FIX (КЛЮЧЕВОЙ БАГ) */
+/* MODAL FIX */
 .modal {
-  display: none; /* FIX */
+  display: none;
   position: fixed;
   inset: 0;
-  z-index: 9999;
-
   background: rgba(0,0,0,0.85);
-
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-
   gap: 10px;
+  z-index: 9999;
 }
 
 .modal.active {
@@ -202,70 +155,54 @@ header {
   border-radius: 10px;
 }
 
+/* MODAL BUTTONS */
 .modal button {
   min-width: 44px;
   min-height: 44px;
-  font-size: 20px;
-  font-weight: 900;
-  z-index: 10;
+  font-size: 18px;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
 }
 
 .modal-close {
   position: absolute;
-  top: 10px;
-  right: 10px;
-
+  top: 15px;
+  right: 15px;
   width: 44px;
   height: 44px;
-
-  border: none;
-  border-radius: 50%;
   background: white;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-/* SMALL TEXT FIX */
-.small {
-  font-size: 13px;
-  color: gray;
+  border-radius: 50%;
+  border: none;
+  z-index: 10000;
 }
 </style>
 </head>
 
 <body>
 
-<header id="header">
+<header>
   <h2>Оберіть потрібну пропозицію</h2>
   <div class="header-info">📞 Валентина | +380934704743</div>
 </header>
 
-<div class="container">
-  <div class="products" id="products"></div>
+<div class="products" id="products"></div>
 
-  <div class="cart" id="cartBox">
+<div class="cart" id="cartBox">
+  <h3>🛒 Кошик</h3>
+  <div id="cart"></div>
 
-    <div class="cart-title">
-      <span>🛒 Кошик</span>
-      <span id="total">0 грн</span>
-    </div>
+  <input id="name" placeholder="Ім'я">
+  <input id="phone" placeholder="Телефон">
+  <textarea id="city" placeholder="Адреса"></textarea>
+  <textarea id="comment" placeholder="Коментар"></textarea>
 
-    <div id="cart"></div>
+  <button class="order-btn" onclick="sendOrder()">Оформити замовлення</button>
 
-    <input id="name" placeholder="Ім'я">
-    <input id="phone" placeholder="Телефон">
-    <textarea id="city" placeholder="Адреса"></textarea>
-    <textarea id="comment" placeholder="Коментар"></textarea>
-
-    <button class="order-btn" onclick="sendOrder()">Оформити замовлення</button>
-
-    <p class="small">
-      Безкоштовна доставка можлива за домовленістю та залежить від суми замовлення і адреси доставки.
-    </p>
-  </div>
+  <p class="small">
+    Безкоштовна доставка можлива за домовленістю та залежить від суми замовлення і адреси доставки.
+  </p>
 </div>
-
-<button class="open-cart-btn" id="cartBtn" onclick="scrollToCart()">🛒 Кошик</button>
 
 <!-- MODAL -->
 <div class="modal" id="imgModal">
@@ -277,28 +214,29 @@ header {
 
 <script>
 
-let products = [/* ТВОИ ТОВАРЫ БЕЗ ИЗМЕНЕНИЙ */];
+let products = [
+  {
+    name: "Товар 1",
+    price: 100,
+    description: "Опис",
+    images: ["img/1.jpg","img/2.jpg","img/3.jpg"]
+  }
+];
+
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let imgIndex = {};
-let startX = 0;
 
-/* PRODUCTS */
 renderProducts();
 renderCart();
 
+/* PRODUCTS */
 function renderProducts(){
   let html = "";
 
-  products.forEach((p, i) => {
+  products.forEach((p,i)=>{
     html += `
       <div class="product">
-
-        <img src="${p.images[0]}"
-          id="img-${i}"
-          onpointerdown="startSwipe(event)"
-          onpointerup="endSwipe(event, ${i})"
-          onclick="openImg(${i})"
-        >
+        <img src="${p.images[0]}" id="img-${i}" onclick="openImg(${i})">
 
         <div class="controls">
           <button onclick="prevImg(${i})">⬅</button>
@@ -309,7 +247,7 @@ function renderProducts(){
         <p>${p.description}</p>
         <b>${p.price} грн</b>
 
-        <button onclick="add(${i})">Додати до кошика</button>
+        <button onclick="add(${i})">Додати</button>
       </div>
     `;
   });
@@ -317,45 +255,26 @@ function renderProducts(){
   document.getElementById("products").innerHTML = html;
 }
 
-/* SLIDER SAFE */
+/* SLIDER */
 function getIndex(i){
-  if(imgIndex[i] === undefined) imgIndex[i] = 0;
+  if(imgIndex[i] === undefined) imgIndex[i]=0;
   return imgIndex[i];
 }
 
 function nextImg(i){
-  let p = products[i];
-  imgIndex[i] = (getIndex(i) + 1) % p.images.length;
-  document.getElementById(`img-${i}`).src = p.images[getIndex(i)];
+  imgIndex[i] = (getIndex(i)+1) % products[i].images.length;
+  document.getElementById(`img-${i}`).src = products[i].images[getIndex(i)];
 }
 
 function prevImg(i){
-  let p = products[i];
-  imgIndex[i] = (getIndex(i) - 1 + p.images.length) % p.images.length;
-  document.getElementById(`img-${i}`).src = p.images[getIndex(i)];
+  imgIndex[i] = (getIndex(i)-1+products[i].images.length)%products[i].images.length;
+  document.getElementById(`img-${i}`).src = products[i].images[getIndex(i)];
 }
 
-/* SWIPE SAFE */
-function startSwipe(e){
-  startX = e.clientX || e.touches?.[0].clientX;
-}
-
-function endSwipe(e, i){
-  let endX = e.clientX || e.changedTouches?.[0].clientX;
-  if(!startX || !endX) return;
-
-  let diff = startX - endX;
-  if(Math.abs(diff) < 40) return;
-
-  diff > 0 ? nextImg(i) : prevImg(i);
-}
-
-/* MODAL FIX */
+/* MODAL */
 function openImg(i){
-  const idx = getIndex(i);
-  document.getElementById("modalImg").src = products[i].images[idx];
-
   document.getElementById("imgModal").classList.add("active");
+  document.getElementById("modalImg").src = products[i].images[getIndex(i)];
   document.getElementById("imgModal").dataset.index = i;
 }
 
@@ -377,62 +296,38 @@ function prevModalImg(){
 
 /* CART */
 function add(i){
-  let item = products[i];
-  let found = cart.find(x => x.name === item.name);
-
-  found ? found.qty++ : cart.push({...item, qty:1});
-
-  save();
-  renderCart();
+  let f = cart.find(x=>x.name===products[i].name);
+  if(f) f.qty++;
+  else cart.push({...products[i],qty:1});
+  save(); renderCart();
 }
 
 function renderCart(){
-  let html = "";
-  let total = 0;
-
-  cart.forEach(c => {
-    total += c.price * c.qty;
-    html += `<div class="cart-item">${c.name} x ${c.qty}</div>`;
+  let total=0,html="";
+  cart.forEach(c=>{
+    total+=c.price*c.qty;
+    html+=`<div class="cart-item">${c.name} x ${c.qty}</div>`;
   });
-
-  document.getElementById("cart").innerHTML = html;
-  document.getElementById("total").innerText = total;
+  document.getElementById("cart").innerHTML=html;
 }
 
 function save(){
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
-
-function scrollToCart(){
-  document.getElementById("cartBox").scrollIntoView({behavior:"smooth"});
+  localStorage.setItem("cart",JSON.stringify(cart));
 }
 
 /* ORDER */
 function sendOrder(){
-  let order = "";
-  cart.forEach(c => order += `${c.name} x ${c.qty}\n`);
+  let order="";
+  cart.forEach(c=>order+=`${c.name} x ${c.qty}\n`);
 
-  fetch("https://formspree.io/f/xrevoywb", {
+  fetch("https://formspree.io/f/xrevoywb",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      message: `
-Нове замовлення:
-
-${order}
-
-Ім'я: ${document.getElementById("name").value}
-Телефон: ${document.getElementById("phone").value}
-Адреса: ${document.getElementById("city").value}
-Коментар: ${document.getElementById("comment").value}
-
-Сума: ${document.getElementById("total").innerText}
-`
-    })
+    body:JSON.stringify({message:order})
   });
 
   alert("Замовлення відправлено!");
-  cart = [];
+  cart=[];
   save();
   renderCart();
 }
