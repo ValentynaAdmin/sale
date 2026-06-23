@@ -29,6 +29,12 @@ header {
   font-size: 14px;
   margin-top: 6px;
   opacity: 0.9;
+
+.container {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
 }
 
 /* PRODUCTS */
@@ -162,8 +168,9 @@ header {
   }
 
   .products {
-    padding-bottom: 10px;
-    grid-template-columns: repeat(2, 1fr);
+  padding: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
   }
 
   .container {
@@ -301,6 +308,7 @@ header {
 
 .product {
   overflow: hidden;
+min-width: 0;
 }
 
 .modal-close {
