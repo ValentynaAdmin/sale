@@ -44,9 +44,9 @@ header {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 15px;
-
   padding: 15px;
   box-sizing: border-box;
+  padding-right: 0;
 }
 
 @media (max-width: 1450px) {
@@ -85,11 +85,12 @@ header {
 
 /* ===== CART ===== */
 .cart {
-  position: sticky;
-  top: 90px;
+  flex: 0 0 340px;
 
-  width: 340px;
-  max-height: calc(100vh - 100px);
+  position: sticky;
+  top: 100px;
+
+  max-height: calc(100vh - 120px);
   overflow-y: auto;
 
   background: #e9f5ea;
@@ -97,7 +98,7 @@ header {
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
-
+  
 /* TITLE */
 .cart-title {
   display: flex;
@@ -248,15 +249,6 @@ header {
 
 .order-btn:hover {
   transform: scale(1.03);
-}
-
-/* ===== FIX DESKTOP CART POSITION ===== */
-@media (min-width: 901px) {
-  .cart {
-    position: sticky;
-    top: calc(90px + 10px); /* хедер + отступ */
-    right: 10px;
-  }
 }
 
 .controls button {
