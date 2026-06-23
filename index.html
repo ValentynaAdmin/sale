@@ -278,6 +278,10 @@ header {
   min-width: 44px;
   min-height: 44px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   background: rgba(255,255,255,0.15);
   color: white;
 
@@ -285,7 +289,14 @@ header {
   border-radius: 10px;
 
   font-size: 20px;
-  font-weight: 900;
+  font-weight: 400; /* важно: НЕ 900 */
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  line-height: 1;
+  padding: 0;
+
+  -webkit-text-stroke: 0.3px white;
 }
 
 .container {
