@@ -416,8 +416,8 @@ function renderProducts(){
 >
 
       <div class="controls">
-<button onclick="prevImg(${i})">&#8592;</button>
-<button onclick="nextImg(${i})">&#8594;</button>
+<button onclick="prevImg(${i})">&#x2190;</button>
+<button onclick="nextImg(${i})">&#x2192;</button>
 </div>
 
         <h4>${p.name}</h4>
@@ -616,9 +616,12 @@ function prevModalImg(){
 
   <button class="modal-close" onclick="closeModal()">✖</button>
 
-  <button onclick="prevImg(${i})">&#8592;</button>
+  <button onclick="prevModalImg()">&#x2190;</button>
+
   <img id="modalImg">
-  <button onclick="nextImg(${i})">&#8594;</button>
+
+  <button onclick="nextModalImg()">&#x2192;</button>
+
 </div>
 
 </div>
