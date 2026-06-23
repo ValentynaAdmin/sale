@@ -40,6 +40,7 @@ header {
 /* PRODUCTS */
 .products {
   flex: 1;
+  min-width: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 15px;
@@ -252,14 +253,9 @@ header {
 /* ===== FIX DESKTOP CART POSITION ===== */
 @media (min-width: 901px) {
   .cart {
-    position: fixed;
+    position: sticky;
     top: calc(90px + 10px); /* хедер + отступ */
     right: 10px;
-  }
-
-  /* чтобы не перекрывала товары */
-  .products {
-    padding-right: 360px;
   }
 }
 
