@@ -90,7 +90,7 @@ header {
   position: sticky;
   top: 100px;
 
-  max-height: calc(100vh - 120px);
+  max-height: none; 
   overflow-y: visible;
 
   background: #e9f5ea;
@@ -311,11 +311,6 @@ min-width: 0;
   z-index: 100;
 }
 
-  #total {
-  font-weight: 900;
-  font-size: 18px;
-  color: #2f4f3f;
-}
 </style>
 </head>
 
@@ -501,7 +496,7 @@ function renderCart(){
   });
 
   document.getElementById("cart").innerHTML = html;
-  document.getElementById("total").innerText = `Итого: ${total} грн`;
+  document.getElementById("total").innerHTML = `Итого: <b>${total}</b> грн`;
 }
 
 function save(){
