@@ -570,7 +570,9 @@ function renderProducts(){
   id="img-${i}"
   loading="lazy"
   decoding="async"
-  onclick="add(${i}, this)"
+  onpointerdown="startSwipe(event)"
+  onpointerup="endSwipe(event, ${i})"
+  onclick="openImg(${i})"
 >
 
 ${p.images.length > 1 ? `
@@ -638,12 +640,15 @@ function add(i, btn){
   save();
   renderCart();
 
+  // 👇 визуальный фидбек кнопки
   if(btn){
+    const oldText = btn.innerText;
+
     btn.innerText = "✔ Додано";
     btn.disabled = true;
 
     setTimeout(() => {
-      btn.innerText = "Додати до кошика";
+      btn.innerText = oldText;
       btn.disabled = false;
     }, 1000);
   }
@@ -695,18 +700,15 @@ function scrollToCart(){
   document.getElementById("cartBox").scrollIntoView({behavior:"smooth"});
 }
 
-function sendOrder() {
+/* ORDER */
+function sendOrder(){
 
   let order = "";
+  cart.forEach(c => order += `${c.name} x ${c.qty}\n`);
 
-  cart.forEach(c => {
-    order += `${c.name} x ${c.qty}\n`;
-  });
-
-  const formData = new FormData();
-
-  formData.append("message",
-`Нове замовлення:
+  const payload = {
+    message: `
+Нове замовлення:
 
 ${order}
 
@@ -716,38 +718,35 @@ ${order}
 Коментар: ${document.getElementById("comment").value}
 
 Сума: ${document.getElementById("total").innerText}
-`);
+`
+  };
 
-  fetch("https://formspree.io/f/xrevoywb", {
-    method: "POST",
-    body: formData
-  })
-  .then((res) => {
-
-    if (!res.ok) {
-      throw new Error("Formspree error");
-    }
-
+ fetch("https://formspree.io/f/xrevoywb", {
+  method: "POST",
+  body: formData
+})
+  .then(() => {
     alert("Ваше замовлення прийнято!");
 
-    // ✅ ПОЛНАЯ ОЧИСТКА КОРЗИНЫ (ВАЖНО!)
-cart = [];
-localStorage.removeItem("cart");
-renderCart();
+    cart = [];
+    save();
+    renderCart();
 
-    // очистка формы
     document.getElementById("name").value = "";
     document.getElementById("phone").value = "";
     document.getElementById("city").value = "";
     document.getElementById("comment").value = "";
-
   })
   .catch((err) => {
-    console.log(err);
+    console.log("ERROR:", err);
     alert("Помилка відправки замовлення");
   });
+
+  console.log("SEND ORDER TRIGGERED");
+console.log("cart:", cart);
+  alert("SEND STARTED");
+
 }
-  
 /* BUTTON LOGIC */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
