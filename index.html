@@ -401,7 +401,7 @@ min-width: 0;
   <textarea id="city" placeholder="Адреса"></textarea>
   <textarea id="comment" placeholder="Коментар"></textarea>
 
-  <button class="order-btn" onclick="sendOrder()">
+<button type="button" class="order-btn" onclick="sendOrder()">
     Оформити замовлення
   </button>
 
@@ -721,11 +721,10 @@ ${order}
 `
   };
 
-  fetch("https://formspree.io/f/xrevoywb", {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify(payload)
-  })
+ fetch("https://formspree.io/f/xrevoywb", {
+  method: "POST",
+  body: formData
+})
   .then(() => {
     alert("Ваше замовлення прийнято!");
 
@@ -742,6 +741,10 @@ ${order}
     console.log("ERROR:", err);
     alert("Помилка відправки замовлення");
   });
+
+  console.log("SEND ORDER TRIGGERED");
+console.log("cart:", cart);
+  alert("SEND STARTED");
 
 }
 /* BUTTON LOGIC */
