@@ -327,6 +327,11 @@ min-width: 0;
   background: #1f332a;
   transform: scale(1.02);
 }
+  
+  .product b {
+  display: block;
+  margin-bottom: 6px;
+}
 
 </style>
 </head>
@@ -529,7 +534,7 @@ ${p.images.length > 1 ? `
         <p>${p.description}</p>
         <b>${p.price} грн</b>
 
-        <button class="add-btn" onclick="add(${i})">Додати до кошика</button>
+        <button class="add-btn" onclick="add(${i}, this)">Додати до кошика</button>
       </div>
     `;
   });
@@ -556,7 +561,7 @@ function prevImg(i){
 }
 
 /* CART */
-function add(i){
+function add(i, btn){
   let item = products[i];
   let found = cart.find(x => x.name === item.name);
 
@@ -565,6 +570,19 @@ function add(i){
 
   save();
   renderCart();
+
+  // 👇 визуальный фидбек кнопки
+  if(btn){
+    const oldText = btn.innerText;
+
+    btn.innerText = "✔ Додано";
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.innerText = oldText;
+      btn.disabled = false;
+    }, 1000);
+  }
 }
 
 function changeQty(i, delta){
