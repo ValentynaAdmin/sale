@@ -637,8 +637,9 @@ function add(i, btn){
   if(found) found.qty++;
   else cart.push({...item, qty:1});
 
-  save();
-  renderCart();
+cart.length = 0;
+localStorage.removeItem("cart");
+renderCart();
 
   // 👇 визуальный фидбек кнопки
   if(btn){
