@@ -311,6 +311,22 @@ min-width: 0;
 
   z-index: 100;
 }
+  .add-btn {
+  background: #2f4f3f;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.add-btn:hover {
+  background: #1f332a;
+  transform: scale(1.02);
+}
 
 </style>
 </head>
@@ -513,7 +529,7 @@ ${p.images.length > 1 ? `
         <p>${p.description}</p>
         <b>${p.price} грн</b>
 
-        <button onclick="add(${i})">Додати до кошика</button>
+        <button class="add-btn" onclick="add(${i})">Додати до кошика</button>
       </div>
     `;
   });
