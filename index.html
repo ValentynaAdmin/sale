@@ -701,10 +701,9 @@ function scrollToCart(){
   document.getElementById("cartBox").scrollIntoView({behavior:"smooth"});
 }
 
-function sendOrder(){
+function sendOrder() {
 
   console.log("SEND ORDER TRIGGERED");
-  console.log("cart:", cart);
 
   let order = "";
   cart.forEach(c => {
@@ -734,16 +733,16 @@ ${order}
 
     console.log("STATUS:", res.status);
 
-    if (!res.ok) {
-      throw new Error("Formspree error: " + res.status);
-    }
+    if (!res.ok) throw new Error("Formspree error");
 
     alert("Ваше замовлення прийнято!");
 
-    cart = [];
-    save();
+    // ✅ ОЧИСТКА КОРЗИНЫ
+    cart.length = 0;
+    localStorage.removeItem("cart");
     renderCart();
 
+    // очистка полей
     document.getElementById("name").value = "";
     document.getElementById("phone").value = "";
     document.getElementById("city").value = "";
