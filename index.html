@@ -776,6 +776,13 @@ function openImg(i){
 
   const modalImg = document.getElementById("modalImg");
   const newSrc = p.images[idx];
+  const next = (idx + 1) % p.images.length;
+const prev = (idx - 1 + p.images.length) % p.images.length;
+
+[p.images[next], p.images[prev]].forEach(src => {
+  const img = new Image();
+  img.src = src;
+});
 
   modalImg.style.opacity = "0.3";
 
@@ -836,16 +843,6 @@ temp.onload = () => {
 };
 }
   
-function preloadImages() {
-  products.forEach(p => {
-    p.images.forEach(src => {
-      const img = new Image();
-      img.src = src;
-    });
-  });
-}
-
-window.addEventListener("load", preloadImages);
 window.addEventListener("popstate", function () {
   if (modalOpened) {
     closeModal();
