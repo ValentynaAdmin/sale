@@ -570,9 +570,7 @@ function renderProducts(){
   id="img-${i}"
   loading="lazy"
   decoding="async"
-  onpointerdown="startSwipe(event)"
-  onpointerup="endSwipe(event, ${i})"
-  onclick="openImg(${i})"
+  onclick="add(${i}, this)"
 >
 
 ${p.images.length > 1 ? `
@@ -640,15 +638,12 @@ function add(i, btn){
   save();
   renderCart();
 
-  // 👇 визуальный фидбек кнопки
   if(btn){
-    const oldText = btn.innerText;
-
     btn.innerText = "✔ Додано";
     btn.disabled = true;
 
     setTimeout(() => {
-      btn.innerText = oldText;
+      btn.innerText = "Додати до кошика";
       btn.disabled = false;
     }, 1000);
   }
@@ -700,12 +695,10 @@ function scrollToCart(){
   document.getElementById("cartBox").scrollIntoView({behavior:"smooth"});
 }
 
-function sendOrder(){
-
-  console.log("SEND ORDER TRIGGERED");
-  console.log("cart:", cart);
+function sendOrder() {
 
   let order = "";
+
   cart.forEach(c => {
     order += `${c.name} x ${c.qty}\n`;
   });
@@ -729,20 +722,20 @@ ${order}
     method: "POST",
     body: formData
   })
-  .then(async (res) => {
-
-    console.log("STATUS:", res.status);
+  .then((res) => {
 
     if (!res.ok) {
-      throw new Error("Formspree error: " + res.status);
+      throw new Error("Formspree error");
     }
 
     alert("Ваше замовлення прийнято!");
 
-    cart = [];
-    save();
-    renderCart();
+    // ✅ ПОЛНАЯ ОЧИСТКА КОРЗИНЫ (ВАЖНО!)
+cart = [];
+localStorage.removeItem("cart");
+renderCart();
 
+    // очистка формы
     document.getElementById("name").value = "";
     document.getElementById("phone").value = "";
     document.getElementById("city").value = "";
@@ -750,7 +743,7 @@ ${order}
 
   })
   .catch((err) => {
-    console.log("ERROR:", err);
+    console.log(err);
     alert("Помилка відправки замовлення");
   });
 }
