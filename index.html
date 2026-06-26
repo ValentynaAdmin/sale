@@ -752,7 +752,9 @@ function closeModal(){
   document.getElementById("imgModal").style.display = "none";
   modalOpened = false;
 
-  // важно для мобильных
+  const arrows = document.querySelectorAll(".modal-arrow");
+  arrows.forEach(a => a.style.display = "flex");
+
   history.replaceState(null, "", location.pathname);
 }
 
@@ -773,6 +775,13 @@ function openImg(i){
   };
 
   document.getElementById("imgModal").style.display = "flex";
+  const arrows = document.querySelectorAll(".modal-arrow");
+
+if (products[i].images.length <= 1) {
+  arrows.forEach(a => a.style.display = "none");
+} else {
+  arrows.forEach(a => a.style.display = "flex");
+}
   document.getElementById("imgModal").dataset.index = i;
 
   modalOpened = true;
