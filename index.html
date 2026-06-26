@@ -148,7 +148,7 @@ header {
   bottom: 20px;
   right: 20px;
 
-  background: #2e7d32;
+  background: #2f4f3f;
   color: white;
   padding: 12px 14px;
   border-radius: 50px;
@@ -603,11 +603,8 @@ function sendOrder(){
   let order = "";
   cart.forEach(c => order += `${c.name} x ${c.qty}\n`);
 
-  fetch("https://formspree.io/f/xrevoywb", {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({
-      message: `
+  const payload = {
+    message: `
 Нове замовлення:
 
 ${order}
@@ -619,19 +616,31 @@ ${order}
 
 Сума: ${document.getElementById("total").innerText}
 `
-    })
+  };
+
+  fetch("https://formspree.io/f/xrevoywb", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    alert("Ваше замовлення прийнято!");
+
+    cart = [];
+    save();
+    renderCart();
+
+    document.getElementById("name").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("city").value = "";
+    document.getElementById("comment").value = "";
+  })
+  .catch((err) => {
+    console.log("ERROR:", err);
+    alert("Помилка відправки замовлення");
   });
 
-  alert("Замовлення відправлено!");
-  cart = [];
-  save();
-  renderCart();
-document.getElementById("name").value = "";
-document.getElementById("phone").value = "";
-document.getElementById("city").value = "";
-document.getElementById("comment").value = "";
 }
-
 /* BUTTON LOGIC */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
