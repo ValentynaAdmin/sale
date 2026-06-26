@@ -494,6 +494,8 @@ function renderProducts(){
         <img 
   src="${p.images[0]}" 
   id="img-${i}"
+  loading="lazy"
+  decoding="async"
   onpointerdown="startSwipe(event)"
   onpointerup="endSwipe(event, ${i})"
   onclick="openImg(${i})"
