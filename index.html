@@ -727,6 +727,9 @@ function endSwipe(e, i){
 function closeModal(){
   document.getElementById("imgModal").style.display = "none";
   modalOpened = false;
+
+  // важно для мобильных
+  history.replaceState(null, "", location.pathname);
 }
 
 function openImg(i){
@@ -734,23 +737,24 @@ function openImg(i){
   const idx = getIndex(i);
 
   const modalImg = document.getElementById("modalImg");
-const newSrc = p.images[idx];
+  const newSrc = p.images[idx];
 
-modalImg.style.opacity = "0.3";
+  modalImg.style.opacity = "0.3";
 
-const temp = new Image();
-temp.src = newSrc;
-temp.onload = () => {
-  modalImg.src = newSrc;
-  modalImg.style.opacity = "1";
-};
+  const temp = new Image();
+  temp.src = newSrc;
+  temp.onload = () => {
+    modalImg.src = newSrc;
+    modalImg.style.opacity = "1";
+  };
+
   document.getElementById("imgModal").style.display = "flex";
-
-  // сохраняем индекс товара
   document.getElementById("imgModal").dataset.index = i;
 
   modalOpened = true;
-history.pushState({ modal: true }, "");
+
+  // 👉 ВАЖНО: добавляем "фиктивную страницу" в историю
+  history.pushState({ modal: true }, "", "#img");
 }
 
 function nextModalImg(){
@@ -804,7 +808,8 @@ window.addEventListener("popstate", function () {
 
     window.scrollTo({ top: 0, behavior: "smooth" });
 
-    history.pushState(null, "", location.href);
+    // чистим hash чтобы не застревал
+    history.replaceState(null, "", location.pathname);
   }
 });
 </script>
