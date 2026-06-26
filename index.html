@@ -725,23 +725,28 @@ ${order}
   method: "POST",
   body: formData
 })
-  .then(() => {
-    alert("Ваше замовлення прийнято!");
+.then(async (res) => {
+  console.log("STATUS:", res.status);
 
-    cart = [];
-    save();
-    renderCart();
+  if (!res.ok) {
+    throw new Error("Formspree error: " + res.status);
+  }
 
-    document.getElementById("name").value = "";
-    document.getElementById("phone").value = "";
-    document.getElementById("city").value = "";
-    document.getElementById("comment").value = "";
-  })
-  .catch((err) => {
-    console.log("ERROR:", err);
-    alert("Помилка відправки замовлення");
-  });
+  alert("Ваше замовлення прийнято!");
 
+  cart = [];
+  save();
+  renderCart();
+
+  document.getElementById("name").value = "";
+  document.getElementById("phone").value = "";
+  document.getElementById("city").value = "";
+  document.getElementById("comment").value = "";
+})
+.catch((err) => {
+  console.log("ERROR:", err);
+  alert("Помилка відправки замовлення");
+});
   console.log("SEND ORDER TRIGGERED");
 console.log("cart:", cart);
   alert("SEND STARTED");
