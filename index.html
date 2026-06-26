@@ -570,9 +570,7 @@ function renderProducts(){
   id="img-${i}"
   loading="lazy"
   decoding="async"
-  onpointerdown="startSwipe(event)"
-  onpointerup="endSwipe(event, ${i})"
-  onclick="openImg(${i})"
+  onclick="add(${i}, this)"
 >
 
 ${p.images.length > 1 ? `
