@@ -698,7 +698,6 @@ function scrollToCart(){
 function sendOrder() {
 
   let order = "";
-
   cart.forEach(c => {
     order += `${c.name} x ${c.qty}\n`;
   });
@@ -722,30 +721,23 @@ ${order}
     method: "POST",
     body: formData
   })
-  .then((res) => {
-
-    if (!res.ok) {
-      throw new Error("Formspree error");
-    }
+  .then(() => {
 
     alert("Ваше замовлення прийнято!");
 
-    // ✅ ПОЛНАЯ ОЧИСТКА КОРЗИНЫ (ВАЖНО!)
-cart = [];
-localStorage.removeItem("cart");
-renderCart();
+    cart.length = 0;
+    localStorage.setItem("cart", "[]");
+    renderCart();
 
-    // очистка формы
     document.getElementById("name").value = "";
     document.getElementById("phone").value = "";
     document.getElementById("city").value = "";
     document.getElementById("comment").value = "";
-
   })
-  .catch((err) => {
-    console.log(err);
+  .catch(() => {
     alert("Помилка відправки замовлення");
   });
+
 }
   
 /* BUTTON LOGIC */
