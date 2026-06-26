@@ -638,15 +638,12 @@ function add(i, btn){
   save();
   renderCart();
 
-  // 👇 визуальный фидбек кнопки
   if(btn){
-    const oldText = btn.innerText;
-
     btn.innerText = "✔ Додано";
     btn.disabled = true;
 
     setTimeout(() => {
-      btn.innerText = oldText;
+      btn.innerText = "Додати до кошика";
       btn.disabled = false;
     }, 1000);
   }
@@ -735,8 +732,8 @@ ${order}
     alert("Ваше замовлення прийнято!");
 
     // ✅ ОЧИСТКА КОРЗИНЫ
-    cart.length = 0;
-    localStorage.removeItem("cart");
+    cart = [];
+    save();
     renderCart();
 
     // очистка полей
