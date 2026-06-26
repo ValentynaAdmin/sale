@@ -697,9 +697,8 @@ function scrollToCart(){
 
 function sendOrder() {
 
-  console.log("SEND ORDER TRIGGERED");
-
   let order = "";
+
   cart.forEach(c => {
     order += `${c.name} x ${c.qty}\n`;
   });
@@ -723,20 +722,20 @@ ${order}
     method: "POST",
     body: formData
   })
-  .then(async (res) => {
+  .then((res) => {
 
-    console.log("STATUS:", res.status);
-
-    if (!res.ok) throw new Error("Formspree error");
+    if (!res.ok) {
+      throw new Error("Formspree error");
+    }
 
     alert("Ваше замовлення прийнято!");
 
-    // ✅ ОЧИСТКА КОРЗИНЫ
+    // ✅ ПОЛНАЯ ОЧИСТКА КОРЗИНЫ (ВАЖНО!)
     cart = [];
-    save();
+    localStorage.setItem("cart", JSON.stringify([]));
     renderCart();
 
-    // очистка полей
+    // очистка формы
     document.getElementById("name").value = "";
     document.getElementById("phone").value = "";
     document.getElementById("city").value = "";
@@ -744,7 +743,7 @@ ${order}
 
   })
   .catch((err) => {
-    console.log("ERROR:", err);
+    console.log(err);
     alert("Помилка відправки замовлення");
   });
 }
