@@ -335,14 +335,10 @@ min-width: 0;
 .product img {
   max-width: 100%;
   max-height: 210px;
-  object-fit: cover;
-  content-visibility: auto;
-  contain-intrinsic-size: 210px;
 }
 
   .modal img {
   transition: opacity 0.15s ease;
-  will-change: opacity;
 }
   .modal-arrow {
   min-width: 48px;
@@ -366,6 +362,14 @@ min-width: 0;
 
 .modal-close {
   font-weight: 900;
+}
+  .product img {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.products {
+  contain: layout paint;
 }
 
 </style>
@@ -561,14 +565,14 @@ function renderProducts(){
       <div class="product">
 
         <!-- 📸 ВЕРНУЛ ПЕРЕКЛЮЧЕНИЕ -->
-       <img 
+        <img 
   src="${p.images[0]}" 
+  id="img-${i}"
   loading="lazy"
   decoding="async"
-  fetchpriority="low"
-  width="300"
-  height="210"
-  style="object-fit: cover;"
+  onpointerdown="startSwipe(event)"
+  onpointerup="endSwipe(event, ${i})"
+  onclick="openImg(${i})"
 >
 
 ${p.images.length > 1 ? `
@@ -596,16 +600,33 @@ function getIndex(i){
   return imgIndex[i];
 }
 
+  function setImage(imgEl, src){
+  const temp = new Image();
+  temp.src = src;
+
+  temp.onload = () => {
+    requestAnimationFrame(() => {
+      imgEl.style.opacity = "0.3";
+      imgEl.src = src;
+      imgEl.style.opacity = "1";
+    });
+  };
+}
+  
 function nextImg(i){
   let p = products[i];
   imgIndex[i] = (getIndex(i) + 1) % p.images.length;
-  document.getElementById(`img-${i}`).src = p.images[getIndex(i)];
+
+  const img = document.getElementById(`img-${i}`);
+  setImage(img, p.images[getIndex(i)]);
 }
 
 function prevImg(i){
   let p = products[i];
   imgIndex[i] = (getIndex(i) - 1 + p.images.length) % p.images.length;
-  document.getElementById(`img-${i}`).src = p.images[getIndex(i)];
+
+  const img = document.getElementById(`img-${i}`);
+  setImage(img, p.images[getIndex(i)]);
 }
 
 /* CART */
@@ -783,12 +804,17 @@ function openImg(i){
   const next = (idx + 1) % p.images.length;
 const prev = (idx - 1 + p.images.length) % p.images.length;
 
+[p.images[next], p.images[prev]].forEach(src => {
+  const img = new Image();
+  img.src = src;
+});
+
   modalImg.style.opacity = "0.3";
 
   const temp = new Image();
   temp.src = newSrc;
   temp.onload = () => {
-    modalImg.src = newSrc;
+    setImage(modalImg, newSrc);
     modalImg.style.opacity = "1";
   };
 
@@ -820,7 +846,7 @@ modalImg.style.opacity = "0.3";
 const temp = new Image();
 temp.src = newSrc;
 temp.onload = () => {
-  modalImg.src = newSrc;
+  setImage(modalImg, newSrc);
   modalImg.style.opacity = "1";
 };
 }
@@ -837,7 +863,7 @@ modalImg.style.opacity = "0.3";
 const temp = new Image();
 temp.src = newSrc;
 temp.onload = () => {
-  modalImg.src = newSrc;
+  setImage(modalImg, newSrc);
   modalImg.style.opacity = "1";
 };
 }
