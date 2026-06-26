@@ -340,6 +340,29 @@ min-width: 0;
   .modal img {
   transition: opacity 0.15s ease;
 }
+  .modal-arrow {
+  min-width: 44px;
+  min-height: 44px;
+
+  background: rgba(255,255,255,0.15);
+  color: white;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 20px;
+  font-weight: 900; /* 🔥 как у крестика */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  -webkit-text-stroke: 0.6px white;
+}
+
+.modal-close {
+  font-weight: 900;
+}
 </style>
 </head>
 
@@ -817,13 +840,13 @@ window.addEventListener("popstate", function () {
 <!-- MODAL ZOOM -->
 <div class="modal" id="imgModal">
 
-  <button class="modal-close" onclick="closeModal()">✖</button>
+<button class="modal-close" onclick="closeModal()">✖</button>
 
-  <button onclick="prevModalImg()">&#x2190;</button>
+<button class="modal-arrow" onclick="prevModalImg()">&#x2190;</button>
 
-  <img id="modalImg">
+<img id="modalImg">
 
-  <button onclick="nextModalImg()">&#x2192;</button>
+<button class="modal-arrow" onclick="nextModalImg()">&#x2192;</button>
 
 </div>
 
