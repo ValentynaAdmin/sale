@@ -237,8 +237,9 @@ header {
 
 .controls button {
   flex: 1;
-  background: #3f5f4f;
-  color: white;
+  background: #e0e0e0;
+  color: #555;
+  border: 1px solid #ccc;
   border: none;
   padding: 6px;
   border-radius: 6px;
@@ -310,6 +311,62 @@ min-width: 0;
 
   z-index: 100;
 }
+  .add-btn {
+  background: #2f4f3f;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.add-btn:hover {
+  background: #1f332a;
+  transform: scale(1.02);
+}
+  
+  .product b {
+  display: block;
+  margin-bottom: 6px;
+}
+.product img {
+  max-width: 100%;
+  max-height: 210px;
+  object-fit: cover;
+  content-visibility: auto;
+  contain-intrinsic-size: 210px;
+}
+
+  .modal img {
+  transition: opacity 0.15s ease;
+  will-change: opacity;
+}
+  .modal-arrow {
+  min-width: 48px;
+  min-height: 48px;
+
+  background: rgba(255,255,255,0.2);
+  color: white;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 22px;
+  font-weight: 900;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  -webkit-text-stroke: 0.8px white;
+}
+
+.modal-close {
+  font-weight: 900;
+}
 
 </style>
 </head>
@@ -359,29 +416,11 @@ min-width: 0;
 
 /* PRODUCTS */
 let products = [
- {
-    name: "Бумага офісна Maestro Standart A4",
-    price: 120,
-    description: "80 g/m2 біла 500 аркушів",
-    images: ["img/IMG_20260624_133947.jpg"]
-  },
-   {
-    name: "Бумага офісна Maestro Standart A4",
-    price: 120,
-    description: "80 g/m2 біла 500 аркушів",
-    images: ["img/IMG_20260624.jpg"]
-  },
-  {
-    name: "Товар 2",
-    price: 150,
-    description: "Описание товара",
-    images: ["img/1-1.jpg", "img/1-2.jpg", "img/1-3.jpg"]
-  },
   {
     name: "Банки скляні 3л",
     price: 20,
     description: "Вживані, але в гарному стані",
-    images: ["img/Banki_3L.jpg"]
+    images: ["img/Banky3.jpg"]
   },
     {
     name: "Банки скляні 1л",
@@ -395,27 +434,45 @@ let products = [
     description: "Вживані, але в гарному стані",
     images: ["img/Banky.jfif"]
   },
-      {
-    name: "Банки скляні 0,5л",
-    price: 100,
-    description: "Вживані, але в гарному стані",
-    images: ["img/Banky.jfif"]
+    {
+    name: "Пластиковий ящик для овочів і фруктів",
+    price: 60,
+    description: "Вживаний. Розмір 400×300×190",
+    images: ["img/131.jpg", "img/141.jpg"]
+  },
+   {
+    name: "Бумага офісна Maestro Standart A4",
+    price: 120,
+    description: "80 g/m2 біла 500 аркушів",
+    images: ["img/IMG_20260624_133947.jpg"]
+  },
+   {
+    name: "Бумага офісна Maestro Standart A4",
+    price: 120,
+    description: "80 g/m2 біла 500 аркушів",
+    images: ["img/IMG_20260624.jpg"]
+  },
+   {
+    name: "Фарфоровий заварювальний чайник",
+    price: 200,
+    description: "Вживаний, але майже новий",
+    images: ["img/IMG_20260624_134250.jpg"]
   },
       {
     name: "Набір чашок для кави",
-    price: 100,
-    description: "Нові, навіть не розпаковані",
+    price: 60,
+    description: "Нові. Висота чашок — 5 см, діаметр блюдець — 10,5 см",
     images: ["img/IMG_20260624_134059.jpg"]
   },
   {
     name: "Бандаж грижовий уніфікований Медтекстиль 5011 розмір M/L",
     price: 550,
     description: "Коробка відкрита, але товар абсолютно новий і жодного разу не був у використанні. Бандаж грижовий уніфікований застосовується при пахових і стегнових грижах, коли оперативне лікування протипоказане або не може бути проведене в прийнятні терміни і рекомендують при високій ймовірності випадання або утиску грижі, а також після операції з пахової або стегнової гриж. Бандаж використовується для попередження збільшення грижі при значних фізичних навантаженнях, пов’язаних з підняттям ваги",
-    images: ["img/Бандаж грижовий_1.jpg", "img/Бандаж грижовий_2.jpg", "img/Бандаж грижовий_3.jpg"]
+    images: ["img/Bandage_1.jpg", "img/Bandage_2.jpg", "img/Bandage_3.jpg"]
   },
   {
     name: "Шишки соснові для розпалювання",
-    price: 150,
+    price: 60,
     description: "Сухі соснові шишки - ідеально підходять для швидкого та зручного розпалювання мангалу, печі чи багаття. Горять рівно, дають хороший жар і приємний аромат. Ціна вказана за пакет 35л. При замовленні кількох мпакетів - бонусом додам пів пакету ялинових шишок",
     images: ["img/IMG_20260624_133606.jpg"]
   },
@@ -431,33 +488,45 @@ let products = [
     description: `Вживаний лише декілька разів. У дуже гарному стані. Опис можна подивитись на сайті <a href="https://rozetka.com.ua/ua/392780043/p392780043/" target="_blank">https://rozetka.com.ua/ua/392780043/p392780043</a>`,
     images: ["img/Separator_1.webp", "img/Separator_2.webp"]
   },
-   {
+     {
     name: "Скляні лікувальні масажні банки набір 20 шт",
     price: 550,
     description: "Вживані. В дуже гарному стані",
     images: ["img/IMG_20260624_134409.jpg", "img/IMG_20260624_134337.jpg"]
   },
      {
+    name: "Форма для льоду",
+    price: 100,
+    description: "Нова. Ціна вказана за штуку",
+    images: ["img/ice.jpg"]
+  },
+   {
+    name: "Масажний хулахуп",
+    price: 500,
+    description: "Вживаний, але в дуже гарному стані",
+    images: ["img/IMG_20260624_133641.jpg", "img/IMG_20260622_170154.jpg"]
+  },
+     {
     name: "Комплект постільної білизни (Україна, бязь)",
-    price: 1100,
+    price: 900,
     description: "Новий комплект постільної білизни. Простирадло – 220×240 см, Підковдра – 215×175 см, Наволочки – 70×70 см (2 шт.)",
     images: ["img/1.jpg", "img/3.jpg", "img/2.jpg"]
   },
        {
     name: "Комплект постільної білизни (Україна, бязь)",
-    price: 850,
+    price: 800,
     description: "Новий комплект постільної білизни. Простирадло – 220×240 см, Підковдра – 220×175 см, Наволочки – 70×70 см (2 шт.)",
     images: ["img/8.jpg", "img/9.jpg"]
   },
    {
     name: "Комплект постільної білизни Євро (Туреччина, 100% бавовна)",
-    price: 1100,
+    price: 900,
     description: "Новий комплект постільної білизни. Простирадло – 180×220 см, Підковдра – 180×220 см, Наволочки – 70×70 см (2 шт.)",
     images: ["img/6.jpg", "img/7.jpg"]
   },
    {
     name: "Комплект постільної білизни Євро (Україна, 100% бавовна)",
-    price: 1400,
+    price: 1000,
     description: "Новий комплект постільної білизни. Простирадло – 220×240 см, Підковдра – 200×220 см, Наволочки – 70×70 см (2 шт.)",
     images: ["img/4.jpg", "img/5.jpg"]
   },
@@ -469,13 +538,14 @@ let products = [
   },
    {
     name: "Комплект постільної білизни (Молдова, 100% бавовна)",
-    price: 1200,
+    price: 900,
     description: "Новий комплект постільної білизни. Простирадло – 220×240 см, Підковдра – 215×175 см, Наволочки – 70×70 см (2 шт.)",
-    images: ["img/10.jpg", "img/11.jpg", "img/14.jpg"]
+    images: ["img/10.jpg", "img/11.jpg"]
   },
 ];
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let modalOpened = false;
 let imgIndex = {};
 
 /* RENDER */
@@ -491,26 +561,28 @@ function renderProducts(){
       <div class="product">
 
         <!-- 📸 ВЕРНУЛ ПЕРЕКЛЮЧЕНИЕ -->
-        <img 
+       <img 
   src="${p.images[0]}" 
-  id="img-${i}"
   loading="lazy"
   decoding="async"
-  onpointerdown="startSwipe(event)"
-  onpointerup="endSwipe(event, ${i})"
-  onclick="openImg(${i})"
+  fetchpriority="low"
+  width="300"
+  height="210"
+  style="object-fit: cover;"
 >
 
-      <div class="controls">
-<button onclick="prevImg(${i})">&#x2190;</button>
-<button onclick="nextImg(${i})">&#x2192;</button>
+${p.images.length > 1 ? `
+<div class="controls">
+  <button onclick="prevImg(${i})">&#x2190;</button>
+  <button onclick="nextImg(${i})">&#x2192;</button>
 </div>
+` : ""}
 
         <h4>${p.name}</h4>
         <p>${p.description}</p>
         <b>${p.price} грн</b>
 
-        <button onclick="add(${i})">Додати до кошика</button>
+        <button class="add-btn" onclick="add(${i}, this)">Додати до кошика</button>
       </div>
     `;
   });
@@ -537,7 +609,7 @@ function prevImg(i){
 }
 
 /* CART */
-function add(i){
+function add(i, btn){
   let item = products[i];
   let found = cart.find(x => x.name === item.name);
 
@@ -546,6 +618,19 @@ function add(i){
 
   save();
   renderCart();
+
+  // 👇 визуальный фидбек кнопки
+  if(btn){
+    const oldText = btn.innerText;
+
+    btn.innerText = "✔ Додано";
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.innerText = oldText;
+      btn.disabled = false;
+    }, 1000);
+  }
 }
 
 function changeQty(i, delta){
@@ -600,11 +685,8 @@ function sendOrder(){
   let order = "";
   cart.forEach(c => order += `${c.name} x ${c.qty}\n`);
 
-  fetch("https://formspree.io/f/xrevoywb", {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({
-      message: `
+  const payload = {
+    message: `
 Нове замовлення:
 
 ${order}
@@ -616,15 +698,31 @@ ${order}
 
 Сума: ${document.getElementById("total").innerText}
 `
-    })
+  };
+
+  fetch("https://formspree.io/f/xrevoywb", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    alert("Ваше замовлення прийнято!");
+
+    cart = [];
+    save();
+    renderCart();
+
+    document.getElementById("name").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("city").value = "";
+    document.getElementById("comment").value = "";
+  })
+  .catch((err) => {
+    console.log("ERROR:", err);
+    alert("Помилка відправки замовлення");
   });
 
-  alert("Замовлення відправлено!");
-  cart = [];
-  save();
-  renderCart();
 }
-
 /* BUTTON LOGIC */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -668,45 +766,105 @@ function endSwipe(e, i){
 /* CLOSE */
 function closeModal(){
   document.getElementById("imgModal").style.display = "none";
+  modalOpened = false;
+
+  const arrows = document.querySelectorAll(".modal-arrow");
+  arrows.forEach(a => a.style.display = "flex");
+
+  history.replaceState(null, "", location.pathname);
 }
 
 function openImg(i){
   const p = products[i];
   const idx = getIndex(i);
 
-  document.getElementById("modalImg").src = p.images[idx];
-  document.getElementById("imgModal").style.display = "flex";
+  const modalImg = document.getElementById("modalImg");
+  const newSrc = p.images[idx];
+  const next = (idx + 1) % p.images.length;
+const prev = (idx - 1 + p.images.length) % p.images.length;
 
-  // сохраняем индекс товара
+  modalImg.style.opacity = "0.3";
+
+  const temp = new Image();
+  temp.src = newSrc;
+  temp.onload = () => {
+    modalImg.src = newSrc;
+    modalImg.style.opacity = "1";
+  };
+
+  document.getElementById("imgModal").style.display = "flex";
+  const arrows = document.querySelectorAll(".modal-arrow");
+
+if (products[i].images.length <= 1) {
+  arrows.forEach(a => a.style.display = "none");
+} else {
+  arrows.forEach(a => a.style.display = "flex");
+}
   document.getElementById("imgModal").dataset.index = i;
+
+  modalOpened = true;
+
+  // 👉 ВАЖНО: добавляем "фиктивную страницу" в историю
+  history.pushState({ modal: true }, "", "#img");
 }
 
 function nextModalImg(){
   const i = document.getElementById("imgModal").dataset.index;
 
   nextImg(i);
-  document.getElementById("modalImg").src = products[i].images[getIndex(i)];
+const modalImg = document.getElementById("modalImg");
+const newSrc = products[i].images[getIndex(i)];
+
+modalImg.style.opacity = "0.3";
+
+const temp = new Image();
+temp.src = newSrc;
+temp.onload = () => {
+  modalImg.src = newSrc;
+  modalImg.style.opacity = "1";
+};
 }
 
 function prevModalImg(){
   const i = document.getElementById("imgModal").dataset.index;
 
   prevImg(i);
-  document.getElementById("modalImg").src = products[i].images[getIndex(i)];
-}
+  const modalImg = document.getElementById("modalImg");
+const newSrc = products[i].images[getIndex(i)];
 
+modalImg.style.opacity = "0.3";
+
+const temp = new Image();
+temp.src = newSrc;
+temp.onload = () => {
+  modalImg.src = newSrc;
+  modalImg.style.opacity = "1";
+};
+}
+  
+window.addEventListener("popstate", function () {
+  if (modalOpened) {
+    closeModal();
+    modalOpened = false;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // чистим hash чтобы не застревал
+    history.replaceState(null, "", location.pathname);
+  }
+});
 </script>
 
 <!-- MODAL ZOOM -->
 <div class="modal" id="imgModal">
 
-  <button class="modal-close" onclick="closeModal()">✖</button>
+<button class="modal-close" onclick="closeModal()">✖</button>
 
-  <button onclick="prevModalImg()">&#x2190;</button>
+<button class="modal-arrow" onclick="prevModalImg()">&#x2190;</button>
 
-  <img id="modalImg">
+<img id="modalImg">
 
-  <button onclick="nextModalImg()">&#x2192;</button>
+<button class="modal-arrow" onclick="nextModalImg()">&#x2192;</button>
 
 </div>
 
