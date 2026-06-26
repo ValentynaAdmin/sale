@@ -505,6 +505,7 @@ let products = [
 ];
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let modalOpened = false;
 let imgIndex = {};
 
 /* RENDER */
@@ -725,6 +726,7 @@ function endSwipe(e, i){
 /* CLOSE */
 function closeModal(){
   document.getElementById("imgModal").style.display = "none";
+  modalOpened = false;
 }
 
 function openImg(i){
@@ -746,6 +748,9 @@ temp.onload = () => {
 
   // сохраняем индекс товара
   document.getElementById("imgModal").dataset.index = i;
+
+  modalOpened = true;
+history.pushState({ modal: true }, "");
 }
 
 function nextModalImg(){
@@ -792,6 +797,16 @@ function preloadImages() {
 }
 
 window.addEventListener("load", preloadImages);
+window.addEventListener("popstate", function () {
+  if (modalOpened) {
+    closeModal();
+    modalOpened = false;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    history.pushState(null, "", location.href);
+  }
+});
 </script>
 
 <!-- MODAL ZOOM -->
