@@ -721,35 +721,57 @@ ${order}
 `
   };
 
- fetch("https://formspree.io/f/xrevoywb", {
-  method: "POST",
-  body: formData
-})
-.then(async (res) => {
-  console.log("STATUS:", res.status);
+function sendOrder(){
 
-  if (!res.ok) {
-    throw new Error("Formspree error: " + res.status);
-  }
-
-  alert("Ваше замовлення прийнято!");
-
-  cart = [];
-  save();
-  renderCart();
-
-  document.getElementById("name").value = "";
-  document.getElementById("phone").value = "";
-  document.getElementById("city").value = "";
-  document.getElementById("comment").value = "";
-})
-.catch((err) => {
-  console.log("ERROR:", err);
-  alert("Помилка відправки замовлення");
-});
   console.log("SEND ORDER TRIGGERED");
-console.log("cart:", cart);
-  alert("SEND STARTED");
+  console.log("cart:", cart);
+
+  let order = "";
+  cart.forEach(c => order += `${c.name} x ${c.qty}\n`);
+
+  const formData = new FormData();
+
+  formData.append("message",
+`Нове замовлення:
+
+${order}
+
+Ім'я: ${document.getElementById("name").value}
+Телефон: ${document.getElementById("phone").value}
+Адреса: ${document.getElementById("city").value}
+Коментар: ${document.getElementById("comment").value}
+
+Сума: ${document.getElementById("total").innerText}
+`);
+
+  fetch("https://formspree.io/f/xrevoywb", {
+    method: "POST",
+    body: formData
+  })
+  .then(async (res) => {
+
+    console.log("STATUS:", res.status);
+
+    if (!res.ok) {
+      throw new Error("Formspree error: " + res.status);
+    }
+
+    alert("Ваше замовлення прийнято!");
+
+    cart = [];
+    save();
+    renderCart();
+
+    document.getElementById("name").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("city").value = "";
+    document.getElementById("comment").value = "";
+  })
+  .catch((err) => {
+    console.log("ERROR:", err);
+    alert("Помилка відправки замовлення");
+  });
+}
 
 }
 /* BUTTON LOGIC */
