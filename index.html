@@ -700,15 +700,20 @@ function scrollToCart(){
   document.getElementById("cartBox").scrollIntoView({behavior:"smooth"});
 }
 
-/* ORDER */
 function sendOrder(){
 
-  let order = "";
-  cart.forEach(c => order += `${c.name} x ${c.qty}\n`);
+  console.log("SEND ORDER TRIGGERED");
+  console.log("cart:", cart);
 
-  const payload = {
-    message: `
-Нове замовлення:
+  let order = "";
+  cart.forEach(c => {
+    order += `${c.name} x ${c.qty}\n`;
+  });
+
+  const formData = new FormData();
+
+  formData.append("message",
+`Нове замовлення:
 
 ${order}
 
@@ -718,14 +723,20 @@ ${order}
 Коментар: ${document.getElementById("comment").value}
 
 Сума: ${document.getElementById("total").innerText}
-`
-  };
+`);
 
- fetch("https://formspree.io/f/xrevoywb", {
-  method: "POST",
-  body: formData
-})
-  .then(() => {
+  fetch("https://formspree.io/f/xrevoywb", {
+    method: "POST",
+    body: formData
+  })
+  .then(async (res) => {
+
+    console.log("STATUS:", res.status);
+
+    if (!res.ok) {
+      throw new Error("Formspree error: " + res.status);
+    }
+
     alert("Ваше замовлення прийнято!");
 
     cart = [];
@@ -736,17 +747,14 @@ ${order}
     document.getElementById("phone").value = "";
     document.getElementById("city").value = "";
     document.getElementById("comment").value = "";
+
   })
   .catch((err) => {
     console.log("ERROR:", err);
     alert("Помилка відправки замовлення");
   });
-
-  console.log("SEND ORDER TRIGGERED");
-console.log("cart:", cart);
-  alert("SEND STARTED");
-
 }
+  
 /* BUTTON LOGIC */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
