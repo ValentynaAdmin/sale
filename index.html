@@ -336,6 +336,10 @@ min-width: 0;
   max-width: 100%;
   max-height: 210px;
 }
+
+  .modal img {
+  transition: opacity 0.15s ease;
+}
 </style>
 </head>
 
@@ -727,7 +731,17 @@ function openImg(i){
   const p = products[i];
   const idx = getIndex(i);
 
-  document.getElementById("modalImg").src = p.images[idx];
+  const modalImg = document.getElementById("modalImg");
+const newSrc = p.images[idx];
+
+modalImg.style.opacity = "0.3";
+
+const temp = new Image();
+temp.src = newSrc;
+temp.onload = () => {
+  modalImg.src = newSrc;
+  modalImg.style.opacity = "1";
+};
   document.getElementById("imgModal").style.display = "flex";
 
   // сохраняем индекс товара
@@ -738,16 +752,46 @@ function nextModalImg(){
   const i = document.getElementById("imgModal").dataset.index;
 
   nextImg(i);
-  document.getElementById("modalImg").src = products[i].images[getIndex(i)];
+const modalImg = document.getElementById("modalImg");
+const newSrc = products[i].images[getIndex(i)];
+
+modalImg.style.opacity = "0.3";
+
+const temp = new Image();
+temp.src = newSrc;
+temp.onload = () => {
+  modalImg.src = newSrc;
+  modalImg.style.opacity = "1";
+};
 }
 
 function prevModalImg(){
   const i = document.getElementById("imgModal").dataset.index;
 
   prevImg(i);
-  document.getElementById("modalImg").src = products[i].images[getIndex(i)];
+  const modalImg = document.getElementById("modalImg");
+const newSrc = products[i].images[getIndex(i)];
+
+modalImg.style.opacity = "0.3";
+
+const temp = new Image();
+temp.src = newSrc;
+temp.onload = () => {
+  modalImg.src = newSrc;
+  modalImg.style.opacity = "1";
+};
+}
+  
+function preloadImages() {
+  products.forEach(p => {
+    p.images.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  });
 }
 
+window.addEventListener("load", preloadImages);
 </script>
 
 <!-- MODAL ZOOM -->
