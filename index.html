@@ -363,6 +363,14 @@ min-width: 0;
 .modal-close {
   font-weight: 900;
 }
+  .product img {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.products {
+  contain: layout paint;
+}
 
 </style>
 </head>
@@ -592,16 +600,33 @@ function getIndex(i){
   return imgIndex[i];
 }
 
+  function setImage(imgEl, src){
+  const temp = new Image();
+  temp.src = src;
+
+  temp.onload = () => {
+    requestAnimationFrame(() => {
+      imgEl.style.opacity = "0.3";
+      imgEl.src = src;
+      imgEl.style.opacity = "1";
+    });
+  };
+}
+  
 function nextImg(i){
   let p = products[i];
   imgIndex[i] = (getIndex(i) + 1) % p.images.length;
-  document.getElementById(`img-${i}`).src = p.images[getIndex(i)];
+
+  const img = document.getElementById(`img-${i}`);
+  setImage(img, p.images[getIndex(i)]);
 }
 
 function prevImg(i){
   let p = products[i];
   imgIndex[i] = (getIndex(i) - 1 + p.images.length) % p.images.length;
-  document.getElementById(`img-${i}`).src = p.images[getIndex(i)];
+
+  const img = document.getElementById(`img-${i}`);
+  setImage(img, p.images[getIndex(i)]);
 }
 
 /* CART */
@@ -789,7 +814,7 @@ const prev = (idx - 1 + p.images.length) % p.images.length;
   const temp = new Image();
   temp.src = newSrc;
   temp.onload = () => {
-    modalImg.src = newSrc;
+    setImage(modalImg, newSrc);
     modalImg.style.opacity = "1";
   };
 
@@ -821,7 +846,7 @@ modalImg.style.opacity = "0.3";
 const temp = new Image();
 temp.src = newSrc;
 temp.onload = () => {
-  modalImg.src = newSrc;
+  setImage(modalImg, newSrc);
   modalImg.style.opacity = "1";
 };
 }
@@ -838,7 +863,7 @@ modalImg.style.opacity = "0.3";
 const temp = new Image();
 temp.src = newSrc;
 temp.onload = () => {
-  modalImg.src = newSrc;
+  setImage(modalImg, newSrc);
   modalImg.style.opacity = "1";
 };
 }
