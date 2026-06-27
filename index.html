@@ -565,12 +565,12 @@ function renderProducts(){
       <div class="product">
 
         <!-- 📸 ВЕРНУЛ ПЕРЕКЛЮЧЕНИЕ -->
-        <img 
+<img 
   src="${p.images[0]}" 
   id="img-${i}"
   loading="lazy"
   decoding="async"
-  onclick="add(${i}, this)"
+  onclick="openImg(${i})"
 >
 
 ${p.images.length > 1 ? `
@@ -584,7 +584,7 @@ ${p.images.length > 1 ? `
         <p>${p.description}</p>
         <b>${p.price} грн</b>
 
-        <button class="add-btn" onclick="add(${i}, this)">Додати до кошика</button>
+        <button class="add-btn" onclick="add(${i}, this, event)">Додати до кошика</button>
       </div>
     `;
   });
@@ -628,7 +628,8 @@ function prevImg(i){
 }
 
 /* CART */
-function add(i, btn){
+function add(i, btn, event){
+  if(event) event.stopPropagation();
   let item = products[i];
   let found = cart.find(x => x.name === item.name);
 
@@ -723,7 +724,7 @@ ${order}
 Сума: ${document.getElementById("total").innerText}
 `);
 
- fetch("https://formspree.io/f/mpqgrzby", {
+ fetch("https://formspree.io/f/xrevoywb", {
   method: "POST",
   body: formData,
   mode: "no-cors"
