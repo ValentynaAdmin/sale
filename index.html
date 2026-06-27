@@ -661,6 +661,12 @@ function changeQty(i, delta){
 }
 
 function renderCart(){
+
+  if (!cart || cart.length === 0) {
+    document.getElementById("cart").innerHTML = "";
+    document.getElementById("total").innerText = "Итого: 0 грн";
+    return;
+  }
   let html = "";
   let total = 0;
 
