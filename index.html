@@ -548,7 +548,7 @@ let products = [
   },
 ];
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cart = [];
 let modalOpened = false;
 let imgIndex = {};
 
@@ -731,8 +731,9 @@ ${order}
 
     alert("Ваше замовлення прийнято!");
 
-    cart = [];
-  localStorage.setItem("cart", "[]");
+cart = [];
+localStorage.setItem("cart", "[]");
+renderCart();
 
   document.getElementById("cart").innerHTML = "";
   document.getElementById("total").innerText = "Итого: 0 грн";
@@ -871,6 +872,14 @@ temp.onload = () => {
   modalImg.style.opacity = "1";
 };
 }
+
+  window.addEventListener("load", () => {
+  const saved = JSON.parse(localStorage.getItem("cart"));
+  if (saved && saved.length) {
+    cart = saved;
+    renderCart();
+  }
+});
   
 window.addEventListener("popstate", function () {
   if (modalOpened) {
