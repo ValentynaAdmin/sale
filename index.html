@@ -723,30 +723,27 @@ ${order}
 Сума: ${document.getElementById("total").innerText}
 `);
 
-  fetch("https://formspree.io/f/xrevoywb", {
-    method: "POST",
-    body: formData
-  })
-  .then(() => {
+ fetch("https://formspree.io/f/xrevoywb", {
+  method: "POST",
+  body: formData,
+  mode: "no-cors"
+});
 
-    alert("Ваше замовлення прийнято!");
+alert("Ваше замовлення прийнято!");
 
+// очищаем ВСЕ сразу, без ожидания ответа
 cart = [];
 localStorage.setItem("cart", "[]");
+
 renderCart();
 
-  document.getElementById("cart").innerHTML = "";
-  document.getElementById("total").innerText = "Итого: 0 грн";
+document.getElementById("cart").innerHTML = "";
+document.getElementById("total").innerText = "Итого: 0 грн";
 
-    document.getElementById("name").value = "";
-    document.getElementById("phone").value = "";
-    document.getElementById("city").value = "";
-    document.getElementById("comment").value = "";
-  })
-  .catch(() => {
-    alert("Помилка відправки замовлення");
-  });
-
+document.getElementById("name").value = "";
+document.getElementById("phone").value = "";
+document.getElementById("city").value = "";
+document.getElementById("comment").value = "";
 }
   
 /* BUTTON LOGIC */
