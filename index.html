@@ -725,12 +725,18 @@ ${order}
 `);
 
  fetch("https://formspree.io/f/xrevoywb", {
-  method: "POST",
-  body: formData,
-  mode: "no-cors"
-});
+   method: "POST",
+  body: formData
+})
+.then(response => {
+  if (!response.ok) throw new Error("Error");
 
-alert("Ваше замовлення прийнято!");
+  alert("✔ Замовлення успішно відправлено!");
+})
+.catch(() => {
+  alert("❌ Помилка відправки. Спробуйте ще раз.");
+})
+.finally(() => {
 
 // очищаем ВСЕ сразу, без ожидания ответа
 cart = [];
