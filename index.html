@@ -725,14 +725,25 @@ ${order}
 `);
 
  fetch("https://formspree.io/f/revoywb", {
-   method: "POST",
+method: "POST",
   body: formData
 })
 .then(response => {
-
   if (!response.ok) throw new Error("Error");
 
-  // ✔ УСПЕХ (ТОЛЬКО ЗДЕСЬ)
+  // очищаем корзину ТОЛЬКО после успешной отправки
+  cart = [];
+  localStorage.setItem("cart", "[]");
+  renderCart();
+  
+  document.getElementById("cart").innerHTML = "";
+  document.getElementById("total").innerText = "Итого: 0 грн";
+
+  document.getElementById("name").value = "";
+  document.getElementById("phone").value = "";
+  document.getElementById("city").value = "";
+  document.getElementById("comment").value = "";
+
   const notice = document.createElement("div");
   notice.innerText = "✔ Замовлення успішно відправлено!";
   notice.style.position = "fixed";
@@ -750,26 +761,7 @@ ${order}
   setTimeout(() => notice.remove(), 3000);
 })
 .catch(() => {
-
-  // ❌ ОШИБКА (ТОЛЬКО ЗДЕСЬ)
-  alert("❌ Помилка відправки. Спробуйте ще раз");
-})
-.finally(() => {
-
-  // 🧹 ОЧИСТКА (ВСЕГДА)
-
-  cart = [];
-  localStorage.setItem("cart", "[]");
-
-  renderCart();
-
-  document.getElementById("cart").innerHTML = "";
-  document.getElementById("total").innerText = "Итого: 0 грн";
-
-  document.getElementById("name").value = "";
-  document.getElementById("phone").value = "";
-  document.getElementById("city").value = "";
-  document.getElementById("comment").value = "";
+  alert("❌ Помилка відправки. Спробуйте ще раз.");
 });
   }
   
