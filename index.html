@@ -724,48 +724,47 @@ ${order}
 Сума: ${document.getElementById("total").innerText}
 `);
 
- fetch("https://formspree.io/f/mpqgrzby", {
-   method: "POST",
+ fetch("https://formspree.io/f/revoywb", {
+    method: "POST",
   body: formData
 })
 .then(response => {
   if (!response.ok) throw new Error("Error");
 
   alert("✔ Замовлення успішно відправлено!");
+
+  return response;
 })
 .catch(() => {
-  alert("❌ Помилка відправки. Спробуйте ще раз.");
+  alert("❌ Помилка відправки. Спробуйте ще раз");
 })
 .finally(() => {
+  // очищение корзины — оставляем тут
+  cart = [];
+  localStorage.setItem("cart", "[]");
 
-// очищаем ВСЕ сразу, без ожидания ответа
-cart = [];
-localStorage.setItem("cart", "[]");
+  renderCart();
 
-renderCart();
+  document.getElementById("cart").innerHTML = "";
+  document.getElementById("total").innerText = "Итого: 0 грн";
 
-document.getElementById("cart").innerHTML = "";
-document.getElementById("total").innerText = "Итого: 0 грн";
+  document.getElementById("name").value = "";
+  document.getElementById("phone").value = "";
+  document.getElementById("city").value = "";
+  document.getElementById("comment").value = "";
 
-document.getElementById("name").value = "";
-document.getElementById("phone").value = "";
-document.getElementById("city").value = "";
-document.getElementById("comment").value = "";
-  
-const notice = document.createElement("div");
-notice.innerText = "✔ Замовлення успішно відправлено!";
-notice.style.position = "fixed";
-notice.style.bottom = "80px";
-notice.style.right = "20px";
-notice.style.background = "#2f7f55";
-notice.style.color = "white";
-notice.style.padding = "12px 16px";
-notice.style.borderRadius = "10px";
-notice.style.zIndex = "9999";
-notice.style.fontWeight = "600";
-notice.style.boxShadow = "0 10px 25px rgba(0,0,0,0.2)";
+  const notice = document.createElement("div");
+  notice.innerText = "✔ Замовлення оброблено";
+  notice.style.position = "fixed";
+  notice.style.bottom = "80px";
+  notice.style.right = "20px";
+  notice.style.background = "#2f7f55";
+  notice.style.color = "white";
+  notice.style.padding = "12px 16px";
+  notice.style.borderRadius = "10px";
+  notice.style.zIndex = "9999";
 
-document.body.appendChild(notice);
+  document.body.appendChild(notice);
 
   setTimeout(() => notice.remove(), 3000);
 });
