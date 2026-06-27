@@ -725,11 +725,9 @@ ${order}
 
     alert("Ваше замовлення прийнято!");
 
-  cart = [];
-localStorage.setItem("cart", "[]");
-document.getElementById("cart").innerHTML = "";
-document.getElementById("total").innerText = "0 грн";
-renderCart();
+    cart.length = 0;
+    localStorage.setItem("cart", "[]");
+    renderCart();
 
     document.getElementById("name").value = "";
     document.getElementById("phone").value = "";
